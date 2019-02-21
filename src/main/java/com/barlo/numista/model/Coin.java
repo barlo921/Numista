@@ -32,8 +32,7 @@ public class Coin implements Serializable {
     public Coin() {
     }
 
-    public Coin(Long id, String collection, String subcollection, String coin, String year, String country, String description) {
-        this.id = id;
+    public Coin(String collection, String subcollection, String coin, String year, String country, String description) {
         this.collection = collection;
         this.subcollection = subcollection;
         this.coin = coin;
