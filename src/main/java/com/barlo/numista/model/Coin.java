@@ -4,18 +4,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table
+@Table(name = "coin")
 public class Coin implements Serializable {
 
     @Id
     @GeneratedValue
     private Long id;
-
-    @Column(nullable = false)
-    private String collection;
-
-    @Column
-    private String subcollection;
 
     @Column(nullable = false)
     private String coin;
@@ -32,9 +26,7 @@ public class Coin implements Serializable {
     public Coin() {
     }
 
-    public Coin(String collection, String subcollection, String coin, String year, String country, String description) {
-        this.collection = collection;
-        this.subcollection = subcollection;
+    public Coin(final String coin, final String year, final String country, final String description) {
         this.coin = coin;
         this.year = year;
         this.country = country;
@@ -45,31 +37,15 @@ public class Coin implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(final Long id) {
         this.id = id;
-    }
-
-    public String getCollection() {
-        return collection;
-    }
-
-    public void setCollection(String collection) {
-        this.collection = collection;
-    }
-
-    public String getSubcollection() {
-        return subcollection;
-    }
-
-    public void setSubcollection(String subcollection) {
-        this.subcollection = subcollection;
     }
 
     public String getCoin() {
         return coin;
     }
 
-    public void setCoin(String coin) {
+    public void setCoin(final String coin) {
         this.coin = coin;
     }
 
@@ -77,7 +53,7 @@ public class Coin implements Serializable {
         return year;
     }
 
-    public void setYear(String year) {
+    public void setYear(final String year) {
         this.year = year;
     }
 
@@ -85,7 +61,7 @@ public class Coin implements Serializable {
         return country;
     }
 
-    public void setCountry(String country) {
+    public void setCountry(final String country) {
         this.country = country;
     }
 
@@ -93,7 +69,7 @@ public class Coin implements Serializable {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this.description = description;
     }
 }
