@@ -20,7 +20,11 @@ public class Collection implements Serializable {
     public Collection() {
     }
 
-    public Collection(final Long id, final String name, final Long parentId) {
+    public Collection(final String name) {
+        this.name = name;
+    }
+
+    public Collection(final String name, final Long parentId) {
         this.id = id;
         this.name = name;
         this.parentId = parentId;
@@ -49,4 +53,10 @@ public class Collection implements Serializable {
     public void setParentId(final Long parentId) {
         this.parentId = parentId;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
+
 }

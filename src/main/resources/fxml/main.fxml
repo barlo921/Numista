@@ -53,11 +53,11 @@
                      <children>
                         <VBox prefHeight="220.0" prefWidth="196.0" AnchorPane.topAnchor="655.0">
                            <children>
-                              <ChoiceBox prefHeight="25.0" prefWidth="191.0">
+                              <ComboBox prefHeight="25.0" prefWidth="191.0" fx:id="collectionComboBox">
                                  <VBox.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </VBox.margin>
-                              </ChoiceBox>
+                              </ComboBox>
                               <TextField fx:id="fieldSubcollection" disable="true" promptText="Subcollection">
                                  <VBox.margin>
                                     <Insets left="10.0" top="10.0" />
@@ -95,7 +95,7 @@
                               <Insets left="45.0" />
                            </HBox.margin>
                            <children>
-                              <TextField id="fieldCollectionName" fx:id="fieldCollection1" prefHeight="25.0" prefWidth="159.0" promptText="Collection Name">
+                              <TextField id="fieldCollectionName" fx:id="fieldCollectionName" prefHeight="25.0" prefWidth="159.0" promptText="Collection Name">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -113,7 +113,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </ChoiceBox>
-                              <Button mnemonicParsing="false" text="Create new collection">
+                              <Button mnemonicParsing="false" text="Create new collection" onAction="#newCollection">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
