@@ -5,7 +5,7 @@ import java.util.List;
 //Common Service Interface to work with repository
 public interface NumistaService<T> {
 
-    T save(T coin);
+    T save(T object);
 
     List<T> findAll();
 
