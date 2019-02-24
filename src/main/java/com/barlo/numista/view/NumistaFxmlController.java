@@ -1,9 +1,6 @@
 package com.barlo.numista.view;
 
-import com.barlo.numista.exception.AbstractNumistaException;
-import com.barlo.numista.exception.CollectionAlreadyExistsException;
-import com.barlo.numista.exception.CollectionIsNotSetException;
-import com.barlo.numista.exception.CollectionNameIsEmptyException;
+import com.barlo.numista.exception.*;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.service.NumistaService;
@@ -33,7 +30,6 @@ public class NumistaFxmlController {
 
     //Injecting from FXML
     @FXML private TableView<Coin> coinTable;
-    @FXML private TextField fieldSubcollection;
     @FXML private TextField fieldCoin;
     @FXML private TextField fieldYear;
     @FXML private TextField fieldCountry;
@@ -46,6 +42,7 @@ public class NumistaFxmlController {
     @FXML private TableColumn<Coin, String> countryColumn;
     @FXML private TableColumn<Coin, String> descriptionColumn;
     @FXML private ComboBox<Collection> collectionComboBox;
+    @FXML private ComboBox<Collection> subcollectionComboBox;
     @FXML private ChoiceBox<Collection> collectionToSubcollectionSelector;
     @FXML private CheckBox subcollectionCheckBox;
     @FXML private Button addCoinButton;
@@ -94,16 +91,12 @@ public class NumistaFxmlController {
         collectionList.removeIf(collection -> collection.getParentId() != null);
         collectionData = FXCollections.observableArrayList(collectionList);
 
-        /*
-            Same thing for subcollections.
-            Top-level collections were removed.
-         */
-        collectionList = collectionService.findAll();
-        collectionList.removeIf(collection -> collection.getParentId() == null);
-        subcollectionData = FXCollections.observableArrayList(collectionList);
-
         collectionComboBox.setItems(collectionData);
         collectionToSubcollectionSelector.setItems(collectionData);
+
+        collectionList.clear();
+        subcollectionData = FXCollections.observableArrayList(collectionList);
+        subcollectionComboBox.setItems(subcollectionData);
 
     }
 
@@ -117,23 +110,28 @@ public class NumistaFxmlController {
         String country = fieldCountry.getText();
         String description = fieldDescription.getText();
 
-        //Check that not nullable fields is not empty
-        if (StringUtils.isEmpty(coin)) {
-            return;
+        try {
+
+            //Check that not nullable fields is not empty
+            if (StringUtils.isEmpty(coin)) {
+                throw new CoinNameIsEmptyException();
+            }
+
+            //Create new Coin. Then Save it to repository and add it to ObservableList
+            //ObservableList allows to track changes. So, it allows to immediately add changes to table
+            Coin newCoin = new Coin(coin, year, country, description);
+            coinService.save(newCoin);
+            coinData.add(newCoin);
+
+            //Clear fields
+            fieldCoin.setText("");
+            fieldYear.setText("");
+            fieldCountry.setText("");
+            fieldDescription.setText("");
+
+        } catch (AbstractNumistaException e) {
+            showAlert(e);
         }
-
-        //Create new Coin. Then Save it to repository and add it to ObservableList
-        //ObservableList allows to track changes. So, it allows to immediately add changes to table
-        Coin newCoin = new Coin(coin, year, country, description);
-        coinService.save(newCoin);
-        coinData.add(newCoin);
-
-        //Clear fields
-        fieldSubcollection.setText("");
-        fieldCoin.setText("");
-        fieldYear.setText("");
-        fieldCountry.setText("");
-        fieldDescription.setText("");
 
 
     }
@@ -182,24 +180,25 @@ public class NumistaFxmlController {
                 collectionData.add(newCollection);
 
             }
+
+            //Clear field
+            fieldCollectionName.setText("");
+
         }catch (AbstractNumistaException e) {
             showAlert(e);
         } catch (DataIntegrityViolationException e) {
             showAlert(new CollectionAlreadyExistsException(newCollectionName));
         }
 
-        //Clear field
-        fieldCollectionName.setText("");
-
     }
 
     @FXML
     //If Collection ComboBox become not empty then fields to enter data and submit button become enable.
-    public void checkCollectionComboBoxIsEmpty() {
+    public void checkCollectionComboBoxAction() {
 
         if (collectionComboBox.getValue() != null) {
 
-            fieldSubcollection.setDisable(false);
+            subcollectionComboBox.setDisable(false);
             fieldCoin.setDisable(false);
             fieldYear.setDisable(false);
             fieldCountry.setDisable(false);
@@ -207,6 +206,9 @@ public class NumistaFxmlController {
             addCoinButton.setDisable(false);
 
         }
+
+        //Show sub collections specified only for chosen top-level collection
+        subcollectionFilter();
 
     }
 
@@ -231,6 +233,29 @@ public class NumistaFxmlController {
         alert.setContentText(e.getMessage());
 
         alert.showAndWait();
+    }
+
+    //Subcollection ComboBox must contain only sub collections of specified collection
+    private void subcollectionFilter() {
+
+        //First clear ComboBox items to prevent choose sub collection from different top-level collection
+        subcollectionComboBox.getItems().clear();
+
+        //Get all collections from repository
+        List<Collection> subcollectionList = collectionService.findAll();
+
+        //Get top-level collection specified in ComoBox
+        Collection topLevelCollection = collectionComboBox.getValue();
+
+        //Remove all top-level collections
+        subcollectionList.removeIf(collection -> collection.getParentId() == null);
+
+        //Remove all sub collections not parented to top-level collection specified in ComboBox
+        subcollectionList.removeIf(collection -> collection.getParentId() != topLevelCollection.getId());
+
+        //Add filtered List to ObservableList
+        subcollectionData.setAll(subcollectionList);
+
     }
 
 }

@@ -5,7 +5,7 @@ public class CollectionNameIsEmptyException extends AbstractNumistaException {
     private String message;
 
     public CollectionNameIsEmptyException() {
-        this.message = "Please chose Collection name";
+        this.message = "Please choose Collection name";
     }
 
     @Override

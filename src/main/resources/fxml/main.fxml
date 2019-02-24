@@ -53,16 +53,16 @@
                      <children>
                         <VBox prefHeight="220.0" prefWidth="196.0" AnchorPane.topAnchor="655.0">
                            <children>
-                              <ComboBox prefHeight="25.0" prefWidth="191.0" fx:id="collectionComboBox" onAction="#checkCollectionComboBoxIsEmpty">
+                              <ComboBox fx:id="collectionComboBox" onAction="#checkCollectionComboBoxAction" prefHeight="25.0" prefWidth="191.0">
                                  <VBox.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </VBox.margin>
                               </ComboBox>
-                              <TextField fx:id="fieldSubcollection" disable="true" promptText="Subcollection">
+                              <ComboBox fx:id="subcollectionComboBox" disable="true" prefHeight="25.0" prefWidth="190.0">
                                  <VBox.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </VBox.margin>
-                              </TextField>
+                              </ComboBox>
                               <TextField fx:id="fieldCoin" disable="true" promptText="Coin">
                                  <VBox.margin>
                                     <Insets left="10.0" top="10.0" />
@@ -85,7 +85,7 @@
                               </TextField>
                            </children>
                         </VBox>
-                        <Button disable="true" mnemonicParsing="false" onAction="#addCoin" prefHeight="25.0" prefWidth="94.0" text="Add Coin" fx:id="addCoinButton">
+                        <Button fx:id="addCoinButton" disable="true" mnemonicParsing="false" onAction="#addCoin" prefHeight="25.0" prefWidth="94.0" text="Add Coin">
                            <HBox.margin>
                               <Insets left="15.0" top="10.0" />
                            </HBox.margin>
@@ -100,7 +100,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </TextField>
-                              <CheckBox mnemonicParsing="false" text="Subcollection" fx:id="subcollectionCheckBox" onAction="#checkSubcollectionCheckBox">
+                              <CheckBox fx:id="subcollectionCheckBox" mnemonicParsing="false" onAction="#checkSubcollectionCheckBox" text="Subcollection">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -108,12 +108,12 @@
                                     <Font size="14.0" />
                                  </font>
                               </CheckBox>
-                              <ChoiceBox disable="true" prefWidth="150.0" fx:id="collectionToSubcollectionSelector">
+                              <ChoiceBox fx:id="collectionToSubcollectionSelector" disable="true" prefWidth="150.0">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </ChoiceBox>
-                              <Button mnemonicParsing="false" text="Create new collection" onAction="#newCollection">
+                              <Button mnemonicParsing="false" onAction="#newCollection" text="Create new collection">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
