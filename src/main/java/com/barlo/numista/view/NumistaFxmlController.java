@@ -1,5 +1,9 @@
 package com.barlo.numista.view;
 
+import com.barlo.numista.exception.AbstractNumistaException;
+import com.barlo.numista.exception.CollectionAlreadyExistsException;
+import com.barlo.numista.exception.CollectionIsNotSetException;
+import com.barlo.numista.exception.CollectionNameIsEmptyException;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.service.NumistaService;
@@ -10,6 +14,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
@@ -48,6 +53,7 @@ public class NumistaFxmlController {
     //List that track's changes for TableView
     private ObservableList<Coin> coinData;
     private ObservableList<Collection> collectionData;
+    private ObservableList<Collection> subcollectionData;
 
 
     @PostConstruct
@@ -79,8 +85,22 @@ public class NumistaFxmlController {
 
         coinTable.setItems(coinData);
 
+        /*
+            ObservableList collectionData is filled only with top-level collections.
+            Subcollections were removed before adding.
+        */
         List<Collection> collectionList = collectionService.findAll();
+        //Remove all subcollections from list
+        collectionList.removeIf(collection -> collection.getParentId() != null);
         collectionData = FXCollections.observableArrayList(collectionList);
+
+        /*
+            Same thing for subcollections.
+            Top-level collections were removed.
+         */
+        collectionList = collectionService.findAll();
+        collectionList.removeIf(collection -> collection.getParentId() == null);
+        subcollectionData = FXCollections.observableArrayList(collectionList);
 
         collectionComboBox.setItems(collectionData);
         collectionToSubcollectionSelector.setItems(collectionData);
@@ -125,17 +145,48 @@ public class NumistaFxmlController {
         //Get data of new Collection Name
         String newCollectionName = fieldCollectionName.getText();
 
-        //Check that data is not empty
-        if (StringUtils.isEmpty(newCollectionName)) {
-            return;
+        //Create new Collection
+        Collection newCollection;
+
+        /*
+            Check whether Subcollection CheckBox is set.
+            If true check top-level collection is chosen or throw Exception.
+            Finally if all ok create newCollection that has Name and ParentId which is Id of top-level chosen collection.
+            Also show alert if Exception is occurred.
+         */
+        try {
+
+            //Check that data is not empty
+            if (StringUtils.isEmpty(newCollectionName)) {
+                throw new CollectionNameIsEmptyException();
+            }
+
+
+            if (subcollectionCheckBox.isSelected()) {
+
+                Collection parentCollection = collectionToSubcollectionSelector.getValue();
+
+                if (parentCollection == null) {
+                    throw new CollectionIsNotSetException();
+                } else {
+                    newCollection = new Collection(newCollectionName, parentCollection.getId());
+                    collectionService.save(newCollection);
+                    subcollectionData.add(newCollection);
+                }
+
+            } else {
+                newCollection = new Collection(newCollectionName);
+
+                //Add Collection to repository and ObservableList of ComboBox.
+                collectionService.save(newCollection);
+                collectionData.add(newCollection);
+
+            }
+        }catch (AbstractNumistaException e) {
+            showAlert(e);
+        } catch (DataIntegrityViolationException e) {
+            showAlert(new CollectionAlreadyExistsException(newCollectionName));
         }
-
-        //Create new instance of Collection
-        Collection newCollection = new Collection(newCollectionName);
-
-        //Add Collection to repository and ObservableList of ComboBox
-        collectionData.add(newCollection);
-        collectionService.save(newCollection);
 
         //Clear field
         fieldCollectionName.setText("");
@@ -169,6 +220,17 @@ public class NumistaFxmlController {
             collectionToSubcollectionSelector.setDisable(true);
         }
 
+    }
+
+    private void showAlert(final AbstractNumistaException e) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(e.getException());
+
+        // Header Text: null
+        alert.setHeaderText(null);
+        alert.setContentText(e.getMessage());
+
+        alert.showAndWait();
     }
 
 }
