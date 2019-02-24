@@ -53,7 +53,7 @@
                      <children>
                         <VBox prefHeight="220.0" prefWidth="196.0" AnchorPane.topAnchor="655.0">
                            <children>
-                              <ComboBox prefHeight="25.0" prefWidth="191.0" fx:id="collectionComboBox">
+                              <ComboBox prefHeight="25.0" prefWidth="191.0" fx:id="collectionComboBox" onAction="#checkCollectionComboBoxIsEmpty">
                                  <VBox.margin>
                                     <Insets left="10.0" top="10.0" />
                                  </VBox.margin>
@@ -85,7 +85,7 @@
                               </TextField>
                            </children>
                         </VBox>
-                        <Button disable="true" mnemonicParsing="false" onAction="#addCoin" prefHeight="25.0" prefWidth="94.0" text="Add Coin">
+                        <Button disable="true" mnemonicParsing="false" onAction="#addCoin" prefHeight="25.0" prefWidth="94.0" text="Add Coin" fx:id="addCoinButton">
                            <HBox.margin>
                               <Insets left="15.0" top="10.0" />
                            </HBox.margin>
@@ -100,7 +100,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </TextField>
-                              <CheckBox mnemonicParsing="false" text="Subcollection">
+                              <CheckBox mnemonicParsing="false" text="Subcollection" fx:id="subcollectionCheckBox" onAction="#checkSubcollectionCheckBox">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
@@ -108,7 +108,7 @@
                                     <Font size="14.0" />
                                  </font>
                               </CheckBox>
-                              <ChoiceBox disable="true" prefWidth="150.0">
+                              <ChoiceBox disable="true" prefWidth="150.0" fx:id="collectionToSubcollectionSelector">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>

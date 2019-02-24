@@ -32,7 +32,7 @@ public class NumistaFxmlController {
     @FXML private TextField fieldCoin;
     @FXML private TextField fieldYear;
     @FXML private TextField fieldCountry;
-    @FXML private  TextField fieldDescription;
+    @FXML private TextField fieldDescription;
     @FXML private TextField fieldCollectionName;
     @FXML private TableColumn<Coin, String> collectionColumn;
     @FXML private TableColumn<Coin, String> subcollectionColumn;
@@ -41,6 +41,9 @@ public class NumistaFxmlController {
     @FXML private TableColumn<Coin, String> countryColumn;
     @FXML private TableColumn<Coin, String> descriptionColumn;
     @FXML private ComboBox<Collection> collectionComboBox;
+    @FXML private ChoiceBox<Collection> collectionToSubcollectionSelector;
+    @FXML private CheckBox subcollectionCheckBox;
+    @FXML private Button addCoinButton;
 
     //List that track's changes for TableView
     private ObservableList<Coin> coinData;
@@ -59,7 +62,9 @@ public class NumistaFxmlController {
 
             Value Factories for TableColumns. It's important that parameter be exactly as get method signature e.g. "getCoin()"
 
-            The same thing for ComBox using ObservableList.
+            The same thing for ComBox (Collections List when adding coins) and
+            ChoiceBox (Collection List when create new subcollection) using ObservableList.
+            For both options used the same ObservableList.
          */
         List<Coin> coinList = coinService.findAll();
         coinData = FXCollections.observableArrayList(coinList);
@@ -78,6 +83,7 @@ public class NumistaFxmlController {
         collectionData = FXCollections.observableArrayList(collectionList);
 
         collectionComboBox.setItems(collectionData);
+        collectionToSubcollectionSelector.setItems(collectionData);
 
     }
 
@@ -114,7 +120,7 @@ public class NumistaFxmlController {
 
     @FXML
     //Create new collection in repository
-    public  void newCollection() {
+    public void newCollection() {
 
         //Get data of new Collection Name
         String newCollectionName = fieldCollectionName.getText();
@@ -133,6 +139,35 @@ public class NumistaFxmlController {
 
         //Clear field
         fieldCollectionName.setText("");
+
+    }
+
+    @FXML
+    //If Collection ComboBox become not empty then fields to enter data and submit button become enable.
+    public void checkCollectionComboBoxIsEmpty() {
+
+        if (collectionComboBox.getValue() != null) {
+
+            fieldSubcollection.setDisable(false);
+            fieldCoin.setDisable(false);
+            fieldYear.setDisable(false);
+            fieldCountry.setDisable(false);
+            fieldDescription.setDisable(false);
+            addCoinButton.setDisable(false);
+
+        }
+
+    }
+
+    @FXML
+    //If Subcollection CheckBox is selected then collection selector become enable.
+    public void checkSubcollectionCheckBox() {
+
+        if (subcollectionCheckBox.isSelected()) {
+            collectionToSubcollectionSelector.setDisable(false);
+        } else {
+            collectionToSubcollectionSelector.setDisable(true);
+        }
 
     }
 
