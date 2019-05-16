@@ -20,7 +20,7 @@ public class CoinCollectionMapping implements Serializable {
     public CoinCollectionMapping() {
     }
 
-    public CoinCollectionMapping(final Long id, final Long id_coin, final Long id_collection) {
+    public CoinCollectionMapping(final Long id_coin, final Long id_collection) {
         this.id_coin = id_coin;
         this.id_collection = id_collection;
     }

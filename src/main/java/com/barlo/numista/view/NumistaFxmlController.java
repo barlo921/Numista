@@ -2,6 +2,7 @@ package com.barlo.numista.view;
 
 import com.barlo.numista.exception.*;
 import com.barlo.numista.model.Coin;
+import com.barlo.numista.model.CoinCollectionMapping;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.service.NumistaService;
 import javafx.collections.FXCollections;
@@ -27,6 +28,10 @@ public class NumistaFxmlController {
     @Autowired
     @Qualifier("collectionService")
     private NumistaService collectionService;
+
+    @Autowired
+    @Qualifier("coinCollectionMappingService")
+    private NumistaService coinCollectionMappingService;
 
     //Injecting from FXML
     @FXML private TableView<Coin> coinTable;
@@ -110,6 +115,14 @@ public class NumistaFxmlController {
         String country = fieldCountry.getText();
         String description = fieldDescription.getText();
 
+        Collection collection;
+
+        if (subcollectionComboBox.getValue() != null) {
+            collection = subcollectionComboBox.getValue();
+        } else {
+            collection = collectionComboBox.getValue();
+        }
+
         try {
 
             //Check that not nullable fields is not empty
@@ -118,8 +131,12 @@ public class NumistaFxmlController {
             }
 
             //Create new Coin. Then Save it to repository and add it to ObservableList
-            //ObservableList allows to track changes. So, it allows to immediately add changes to table
+            //ObservableList allows to track changes. So, it allows immediately add changes to table
             Coin newCoin = new Coin(coin, year, country, description);
+
+            CoinCollectionMapping coinCollectionMapping = new CoinCollectionMapping(newCoin.getId(), collection.getId());
+            coinCollectionMappingService.save(coinCollectionMapping);
+
             coinService.save(newCoin);
             coinData.add(newCoin);
 
@@ -255,6 +272,13 @@ public class NumistaFxmlController {
 
         //Add filtered List to ObservableList
         subcollectionData.setAll(subcollectionList);
+
+    }
+
+    //Connection between coins and collections
+    private void coinToCollectionMapping(final Collection collection, final Coin coin) {
+
+
 
     }
 
