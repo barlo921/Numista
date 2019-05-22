@@ -95,6 +95,9 @@ public class NumistaFxmlController {
         collectionToSubcollectionSelector.setItems(collectionData);
 
         collectionList.clear();
+        collectionList = collectionService.findAll();
+        //Remove all collections from list
+        collectionList.removeIf(collection -> collection.getParentId() == null);
         subcollectionData = FXCollections.observableArrayList(collectionList);
         subcollectionComboBox.setItems(subcollectionData);
 
@@ -131,7 +134,6 @@ public class NumistaFxmlController {
             CoinData newCoinData = new CoinData(newCoin);
 
             coinService.save(newCoin);
-            System.out.println(newCoinData);
             coinsData.add(newCoinData);
 
             //Clear fields
