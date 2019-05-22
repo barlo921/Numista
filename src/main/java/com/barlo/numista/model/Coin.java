@@ -23,10 +23,15 @@ public class Coin implements Serializable {
     @Column
     private String description;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "collection_id")
+    private Collection coinCollection;
+
     public Coin() {
     }
 
-    public Coin(final String coin, final String year, final String country, final String description) {
+    public Coin(final Collection coinCollection, final String coin, final String year, final String country, final String description) {
+        this.coinCollection = coinCollection;
         this.coin = coin;
         this.year = year;
         this.country = country;
@@ -71,5 +76,13 @@ public class Coin implements Serializable {
 
     public void setDescription(final String description) {
         this.description = description;
+    }
+
+    public Collection getCoinCollection() {
+        return coinCollection;
+    }
+
+    public void setCoinCollection(Collection coinCollection) {
+        this.coinCollection = coinCollection;
     }
 }

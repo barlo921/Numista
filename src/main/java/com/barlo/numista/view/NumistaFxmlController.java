@@ -2,7 +2,6 @@ package com.barlo.numista.view;
 
 import com.barlo.numista.exception.*;
 import com.barlo.numista.model.Coin;
-import com.barlo.numista.model.CoinCollectionMapping;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.service.NumistaService;
 import javafx.collections.FXCollections;
@@ -29,23 +28,19 @@ public class NumistaFxmlController {
     @Qualifier("collectionService")
     private NumistaService collectionService;
 
-    @Autowired
-    @Qualifier("coinCollectionMappingService")
-    private NumistaService coinCollectionMappingService;
-
     //Injecting from FXML
-    @FXML private TableView<Coin> coinTable;
+    @FXML private TableView<CoinData> coinTable;
     @FXML private TextField fieldCoin;
     @FXML private TextField fieldYear;
     @FXML private TextField fieldCountry;
     @FXML private TextField fieldDescription;
     @FXML private TextField fieldCollectionName;
-    @FXML private TableColumn<Coin, String> collectionColumn;
-    @FXML private TableColumn<Coin, String> subcollectionColumn;
-    @FXML private TableColumn<Coin, String> coinColumn;
-    @FXML private TableColumn<Coin, String> yearColumn;
-    @FXML private TableColumn<Coin, String> countryColumn;
-    @FXML private TableColumn<Coin, String> descriptionColumn;
+    @FXML private TableColumn<CoinData, String> collectionColumn;
+    @FXML private TableColumn<CoinData, String> subcollectionColumn;
+    @FXML private TableColumn<CoinData, String> coinColumn;
+    @FXML private TableColumn<CoinData, String> yearColumn;
+    @FXML private TableColumn<CoinData, String> countryColumn;
+    @FXML private TableColumn<CoinData, String> descriptionColumn;
     @FXML private ComboBox<Collection> collectionComboBox;
     @FXML private ComboBox<Collection> subcollectionComboBox;
     @FXML private ChoiceBox<Collection> collectionToSubcollectionSelector;
@@ -53,7 +48,7 @@ public class NumistaFxmlController {
     @FXML private Button addCoinButton;
 
     //List that track's changes for TableView
-    private ObservableList<Coin> coinData;
+    private ObservableList<CoinData> coinsData;
     private ObservableList<Collection> collectionData;
     private ObservableList<Collection> subcollectionData;
 
@@ -74,8 +69,8 @@ public class NumistaFxmlController {
             ChoiceBox (Collection List when create new subcollection) using ObservableList.
             For both options used the same ObservableList.
          */
-        List<Coin> coinList = coinService.findAll();
-        coinData = FXCollections.observableArrayList(coinList);
+        coinsData = FXCollections.observableArrayList();
+        coinToCollectionMapping(coinService.findAll());
 
         //Table columns
         collectionColumn.setCellValueFactory(new PropertyValueFactory<>("collection"));
@@ -85,7 +80,7 @@ public class NumistaFxmlController {
         countryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        coinTable.setItems(coinData);
+        coinTable.setItems(coinsData);
 
         /*
             ObservableList collectionData is filled only with top-level collections.
@@ -132,13 +127,12 @@ public class NumistaFxmlController {
 
             //Create new Coin. Then Save it to repository and add it to ObservableList
             //ObservableList allows to track changes. So, it allows immediately add changes to table
-            Coin newCoin = new Coin(coin, year, country, description);
-
-            CoinCollectionMapping coinCollectionMapping = new CoinCollectionMapping(newCoin.getId(), collection.getId());
-            coinCollectionMappingService.save(coinCollectionMapping);
+            Coin newCoin = new Coin(collection, coin, year, country, description);
+            CoinData newCoinData = new CoinData(newCoin);
 
             coinService.save(newCoin);
-            coinData.add(newCoin);
+            System.out.println(newCoinData);
+            coinsData.add(newCoinData);
 
             //Clear fields
             fieldCoin.setText("");
@@ -276,10 +270,81 @@ public class NumistaFxmlController {
     }
 
     //Connection between coins and collections
-    private void coinToCollectionMapping(final Collection collection, final Coin coin) {
+    private void coinToCollectionMapping(final List<Coin> coinsList) {
+
+        for (Coin coin :
+                coinsList) {
+            coinsData.add(new CoinData(coin));
+        }
 
 
+    }
 
+    //Inner class only for preview Data in TableView (UI)
+    public class CoinData {
+
+        private String collection;
+        private String subcollection;
+        private String coin;
+        private String year;
+        private String country;
+        private String description;
+
+        public CoinData(Coin coin) {
+
+            if (coin.getCoinCollection().getParentId() != null) {
+                this.subcollection = coin.getCoinCollection().getName();
+
+                Collection topLevelCollection = (Collection) collectionService.findById(coin.getCoinCollection().getParentId());
+                this.collection = topLevelCollection.getName();
+            }
+
+            if (coin.getCoinCollection().getParentId() == null) {
+                this.collection = coin.getCoinCollection().getName();
+            }
+
+            this.coin = coin.getCoin();
+            this.year = coin.getYear();
+            this.country = coin.getCountry();
+            this.description = coin.getDescription();
+
+        }
+
+        public String getCollection() {
+            return collection;
+        }
+
+        public String getSubcollection() {
+            return subcollection;
+        }
+
+        public String getCoin() {
+            return coin;
+        }
+
+        public String getYear() {
+            return year;
+        }
+
+        public String getCountry() {
+            return country;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+
+        @Override
+        public String toString() {
+            return "CoinData{" +
+                    "collection='" + collection + '\'' +
+                    ", subcollection='" + subcollection + '\'' +
+                    ", coin='" + coin + '\'' +
+                    ", year='" + year + '\'' +
+                    ", country='" + country + '\'' +
+                    ", description='" + description + '\'' +
+                    '}';
+        }
     }
 
 }

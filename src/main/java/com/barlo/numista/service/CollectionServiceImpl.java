@@ -35,4 +35,8 @@ public class CollectionServiceImpl implements NumistaService {
         return collectionRepository.findAll();
     }
 
+    @Override
+    public Collection findById(Long id) {
+        return collectionRepository.findById(id).get();
+    }
 }

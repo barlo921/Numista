@@ -9,4 +9,6 @@ public interface NumistaService<T> {
 
     List<T> findAll();
 
+    T findById(Long id);
+
 }

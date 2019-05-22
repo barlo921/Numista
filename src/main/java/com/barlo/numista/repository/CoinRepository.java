@@ -7,8 +7,12 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional(propagation = Propagation.MANDATORY)
 public interface CoinRepository extends CrudRepository<Coin, Long> {
     List<Coin> findAll();
+
+    @Override
+    Optional<Coin> findById(Long id);
 }

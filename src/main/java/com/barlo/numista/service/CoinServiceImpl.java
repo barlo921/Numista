@@ -34,4 +34,9 @@ public class CoinServiceImpl implements NumistaService {
     public List<Coin> findAll() {
         return coinRepository.findAll();
     }
+
+    @Override
+    public Coin findById(Long id) {
+        return coinRepository.findById(id).get();
+    }
 }

@@ -113,7 +113,7 @@
                                     <Insets top="10.0" />
                                  </VBox.margin>
                               </ChoiceBox>
-                              <Button mnemonicParsing="false" onAction="#newCollection" text="Create new collection">
+                              <Button mnemonicParsing="false" onAction="#newCollection" text="Create new coinCollection">
                                  <VBox.margin>
                                     <Insets top="10.0" />
                                  </VBox.margin>
