@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.barlo.numista.view.CoinViewController">
+   <children>
+      <ImageView fx:id="coinImage" fitHeight="150.0" fitWidth="150.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="236.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="436.0" AnchorPane.topAnchor="14.0" />
+      <Text fx:id="coinNameText" layoutX="265.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Coin Name" AnchorPane.leftAnchor="265.0" AnchorPane.rightAnchor="211.30859375" AnchorPane.topAnchor="14.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="179.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Collection:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="179.0" layoutY="95.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcollection:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="179.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="179.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="lastModifiedText" layoutX="446.0" layoutY="383.0" strokeType="OUTSIDE" strokeWidth="0.0" text="last modified 01/01/1990" AnchorPane.bottomAnchor="14.46875" AnchorPane.rightAnchor="14.81640625">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Owner:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="14.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags:">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="collectionText" layoutX="300.0" layoutY="67.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Collection">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="subcollectionText" layoutX="300.0" layoutY="96.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Subcollection">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="yearText" layoutX="300.0" layoutY="124.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Year">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="countryText" layoutX="302.0" layoutY="153.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Country">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="descriptionText" layoutX="121.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Description">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="ownerText" layoutX="82.0" layoutY="264.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Owner">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text fx:id="tagsText" layoutX="82.0" layoutY="296.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tags">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Button fx:id="editButton" layoutX="21.0" layoutY="354.0" mnemonicParsing="false" onAction="#editCoin" prefHeight="32.0" prefWidth="90.0" text="Edit" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="21.0">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

@@ -1,5 +1,6 @@
 package com.barlo.numista.view;
 
+import com.barlo.numista.Numista;
 import com.barlo.numista.exception.*;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
@@ -8,14 +9,20 @@ import com.barlo.numista.utils.WindowUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class NumistaFxmlController {
@@ -28,6 +35,10 @@ public class NumistaFxmlController {
     @Autowired
     @Qualifier("collectionService")
     private NumistaService collectionService;
+
+    //Static fields
+    private static CoinData editingCoin;
+    private static Stage newWindowStage; // This field for changing scenes in popup windows
 
     //Injecting from FXML
     @FXML private TableView<CoinData> coinTable;
@@ -53,6 +64,16 @@ public class NumistaFxmlController {
     private ObservableList<Collection> collectionData;
     private ObservableList<Collection> subcollectionData;
 
+    //Static methods
+    public static CoinData getEditingCoin() {
+        return editingCoin;
+    }
+    public static void setEditingCoin(CoinData editingCoin) {
+        NumistaFxmlController.editingCoin = editingCoin;
+    }
+    public static Stage getNewWindowStage() {
+        return newWindowStage;
+    }
 
     @PostConstruct
     public void init(){
@@ -270,6 +291,47 @@ public class NumistaFxmlController {
         }
 
 
+    }
+
+    //Set event when double click on coin row. It will open window with all information about coin.
+    @PostConstruct
+    private void coinEditOnClickEvent() {
+
+        coinTable.setRowFactory(tv -> {
+            TableRow<CoinData> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+
+                    InputStream fxmlStream;
+                    editingCoin = row.getItem();
+
+                    try {
+                        fxmlStream = getClass().getClassLoader().getResourceAsStream("fxml/coinTemplateFXML.fxml");
+                        FXMLLoader fxmlLoader = new FXMLLoader();
+                        fxmlLoader.load(fxmlStream);
+                        newWindow(fxmlLoader);
+                    } catch (IOException e) {
+                        throw new RuntimeException("This should never happen");
+                    }
+
+                }
+            });
+            return row;
+        });
+
+    }
+
+    //Method to create new window for different purposes
+    private void newWindow(final FXMLLoader loader){
+        //Set new Stage
+        Stage newWindow = new Stage();
+        //Set owner for this new window. It makes primary stage unavailable while new window is opened
+        newWindow.initModality(Modality.APPLICATION_MODAL);
+        newWindow.initOwner(Numista.getPrimaryStage().getScene().getWindow());
+
+        newWindow.setScene(new Scene(loader.getRoot()));
+        newWindowStage = newWindow;
+        newWindow.show();
     }
 
     //Inner class only for preview Data in TableView (UI)

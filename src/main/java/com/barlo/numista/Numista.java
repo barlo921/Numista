@@ -38,7 +38,7 @@ public class Numista extends AbstractNumistaApplication {
         lunchApp(Numista.class, args);
     }
 
-    public static Stage getPrimaryStage() {
+    public static Stage getPrimaryStage(){
         return primaryStage;
     }
 }
