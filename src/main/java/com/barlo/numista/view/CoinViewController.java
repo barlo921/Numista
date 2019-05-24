@@ -1,5 +1,6 @@
 package com.barlo.numista.view;
 
+import com.barlo.numista.utils.WindowUtils;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -35,18 +36,7 @@ public class CoinViewController {
     }
 
     public void editCoin() {
-
         thisStage = NumistaFxmlController.getNewWindowStage();
-        InputStream fxmlStream;
-
-        try {
-            fxmlStream = getClass().getClassLoader().getResourceAsStream("fxml/coinUpdateTemplateFXML.fxml");
-            FXMLLoader loader = new FXMLLoader();
-            loader.load(fxmlStream);
-            thisStage.setScene(new Scene(loader.getRoot()));
-        } catch (IOException e) {
-            throw new RuntimeException("This should never happen");
-        }
-
+        WindowUtils.changeScene("fxml/coinUpdateTemplateFXML.fxml", thisStage);
     }
 }

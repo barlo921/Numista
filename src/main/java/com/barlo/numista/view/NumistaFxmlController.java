@@ -301,37 +301,13 @@ public class NumistaFxmlController {
             TableRow<CoinData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
-
-                    InputStream fxmlStream;
                     editingCoin = row.getItem();
-
-                    try {
-                        fxmlStream = getClass().getClassLoader().getResourceAsStream("fxml/coinTemplateFXML.fxml");
-                        FXMLLoader fxmlLoader = new FXMLLoader();
-                        fxmlLoader.load(fxmlStream);
-                        newWindow(fxmlLoader);
-                    } catch (IOException e) {
-                        throw new RuntimeException("This should never happen");
-                    }
-
+                    newWindowStage = WindowUtils.newPopupWindow("fxml/coinTemplateFXML.fxml");
                 }
             });
             return row;
         });
 
-    }
-
-    //Method to create new window for different purposes
-    private void newWindow(final FXMLLoader loader){
-        //Set new Stage
-        Stage newWindow = new Stage();
-        //Set owner for this new window. It makes primary stage unavailable while new window is opened
-        newWindow.initModality(Modality.APPLICATION_MODAL);
-        newWindow.initOwner(Numista.getPrimaryStage().getScene().getWindow());
-
-        newWindow.setScene(new Scene(loader.getRoot()));
-        newWindowStage = newWindow;
-        newWindow.show();
     }
 
     //Inner class only for preview Data in TableView (UI)

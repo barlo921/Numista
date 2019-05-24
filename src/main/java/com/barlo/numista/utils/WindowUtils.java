@@ -32,6 +32,20 @@ public class WindowUtils {
         return null;
     }
 
+    //Change scene in existing stage
+    public static void changeScene(final String fxml, final Stage stage) {
+        InputStream fxmlStream;
+
+        try {
+            fxmlStream = WindowUtils.class.getClassLoader().getResourceAsStream(fxml);
+            FXMLLoader loader = new FXMLLoader();
+            loader.load(fxmlStream);
+            stage.setScene(new Scene(loader.getRoot()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     //Create alert if Exception occurred
     public static void showAlert(final AbstractNumistaException e) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
