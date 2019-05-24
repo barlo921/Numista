@@ -4,6 +4,7 @@ import com.barlo.numista.exception.*;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.service.NumistaService;
+import com.barlo.numista.utils.WindowUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -143,7 +144,7 @@ public class NumistaFxmlController {
             fieldDescription.setText("");
 
         } catch (AbstractNumistaException e) {
-            showAlert(e);
+            WindowUtils.showAlert(e);
         }
 
 
@@ -198,9 +199,9 @@ public class NumistaFxmlController {
             fieldCollectionName.setText("");
 
         }catch (AbstractNumistaException e) {
-            showAlert(e);
+            WindowUtils.showAlert(e);
         } catch (DataIntegrityViolationException e) {
-            showAlert(new CollectionAlreadyExistsException(newCollectionName));
+            WindowUtils.showAlert(new CollectionAlreadyExistsException(newCollectionName));
         }
 
     }
@@ -235,17 +236,6 @@ public class NumistaFxmlController {
             collectionToSubcollectionSelector.setDisable(true);
         }
 
-    }
-
-    private void showAlert(final AbstractNumistaException e) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(e.getException());
-
-        // Header Text: null
-        alert.setHeaderText(null);
-        alert.setContentText(e.getMessage());
-
-        alert.showAndWait();
     }
 
     //Subcollection ComboBox must contain only sub collections of specified collection

@@ -18,8 +18,12 @@ public class Numista extends AbstractNumistaApplication {
     @Autowired
     NumistaConfiguration.ViewHolder view;
 
+    private static Stage primaryStage;
+
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        Numista.primaryStage = primaryStage;
 
         //JavaFX setting stage and show UI
         primaryStage.setTitle(windowTitle);
@@ -32,5 +36,9 @@ public class Numista extends AbstractNumistaApplication {
 
     public static void main(String[] args) {
         lunchApp(Numista.class, args);
+    }
+
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 }
