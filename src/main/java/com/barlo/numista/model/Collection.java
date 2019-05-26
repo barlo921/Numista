@@ -2,6 +2,7 @@ package com.barlo.numista.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -19,9 +20,9 @@ public class Collection implements Serializable {
     private Long parentId;
 
     @OneToMany(cascade = CascadeType.ALL,
-                fetch = FetchType.LAZY,
+                fetch = FetchType.EAGER,
                 mappedBy = "coinCollection")
-    private Set<Coin> setOfCoins;
+    private Set<Coin> setOfCoins = new HashSet<>();
 
     public Collection() {
     }
@@ -31,7 +32,6 @@ public class Collection implements Serializable {
     }
 
     public Collection(final String name, final Long parentId) {
-        this.id = id;
         this.name = name;
         this.parentId = parentId;
     }
@@ -68,9 +68,15 @@ public class Collection implements Serializable {
         this.setOfCoins = setOfCoins;
     }
 
+    public void addCoin(Coin coin) {
+        this.setOfCoins.add(coin);
+        if (coin.getCoinCollection() != this) {
+            coin.setCoinCollection(this);
+        }
+    }
+
     @Override
     public String toString() {
         return name;
     }
-
 }

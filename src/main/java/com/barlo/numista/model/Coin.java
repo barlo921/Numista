@@ -23,7 +23,7 @@ public class Coin implements Serializable {
     @Column
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "collection_id")
     private Collection coinCollection;
 
@@ -31,7 +31,7 @@ public class Coin implements Serializable {
     }
 
     public Coin(final Collection coinCollection, final String coin, final String year, final String country, final String description) {
-        this.coinCollection = coinCollection;
+        setCoinCollection(coinCollection);
         this.coin = coin;
         this.year = year;
         this.country = country;
@@ -84,5 +84,20 @@ public class Coin implements Serializable {
 
     public void setCoinCollection(Collection coinCollection) {
         this.coinCollection = coinCollection;
+        if (!coinCollection.getSetOfCoins().contains(this)) {
+            coinCollection.getSetOfCoins().add(this);
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Coin{" +
+                "id=" + id +
+                ", coin='" + coin + '\'' +
+                ", year='" + year + '\'' +
+                ", country='" + country + '\'' +
+                ", description='" + description + '\'' +
+                ", coinCollection=" + coinCollection +
+                '}';
     }
 }

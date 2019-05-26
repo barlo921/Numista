@@ -1,6 +1,5 @@
 package com.barlo.numista.repository;
 
-
 import com.barlo.numista.model.Coin;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.transaction.annotation.Propagation;
@@ -11,6 +10,7 @@ import java.util.Optional;
 
 @Transactional(propagation = Propagation.MANDATORY)
 public interface CoinRepository extends CrudRepository<Coin, Long> {
+    @Override
     List<Coin> findAll();
 
     @Override

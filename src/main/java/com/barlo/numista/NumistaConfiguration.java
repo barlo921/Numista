@@ -1,5 +1,8 @@
 package com.barlo.numista;
 
+import com.barlo.numista.model.Coin;
+import com.barlo.numista.view.CoinEditController;
+import com.barlo.numista.view.CoinViewController;
 import com.barlo.numista.view.NumistaFxmlController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -17,10 +20,30 @@ public class NumistaConfiguration {
         return loadView("fxml/main.fxml");
     }
 
+    @Bean(name = "coinView")
+    public ViewHolder getCoinView() throws IOException{
+        return loadView("fxml/coinTemplateFXML.fxml");
+    }
+
+    @Bean(name = "coinEdit")
+    public ViewHolder getCoinEdit() throws IOException{
+        return loadView("fxml/coinUpdateTemplateFXML.fxml");
+    }
+
     //This method adds FXML Controller (NumistaFxmlController) to spring context
     @Bean
     public NumistaFxmlController getNumistaFxmlController() throws IOException {
         return (NumistaFxmlController) getMainView().getController();
+    }
+
+    @Bean
+    public CoinViewController getCoinViewController() throws IOException {
+        return (CoinViewController) getCoinView().getController();
+    }
+
+    @Bean
+    CoinEditController getCoinEditController() throws IOException{
+        return (CoinEditController) getCoinEdit().getController();
     }
 
     //loadView method loads FXML UI from specified file

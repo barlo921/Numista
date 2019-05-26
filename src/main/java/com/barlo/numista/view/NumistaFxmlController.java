@@ -1,6 +1,6 @@
 package com.barlo.numista.view;
 
-import com.barlo.numista.Numista;
+import com.barlo.numista.NumistaConfiguration;
 import com.barlo.numista.exception.*;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
@@ -9,11 +9,8 @@ import com.barlo.numista.utils.WindowUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,8 +18,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 public class NumistaFxmlController {
@@ -36,9 +31,15 @@ public class NumistaFxmlController {
     @Qualifier("collectionService")
     private NumistaService collectionService;
 
+    @Autowired
+    @Qualifier("coinView")
+    private NumistaConfiguration.ViewHolder coinView;
+
+    @Autowired
+    private CoinViewController coinViewController;
+
     //Static fields
-    private static CoinData editingCoin;
-    private static Stage newWindowStage; // This field for changing scenes in popup windows
+    private static Coin editingCoin;
 
     //Injecting from FXML
     @FXML private TableView<CoinData> coinTable;
@@ -65,14 +66,8 @@ public class NumistaFxmlController {
     private ObservableList<Collection> subcollectionData;
 
     //Static methods
-    public static CoinData getEditingCoin() {
+    public static Coin getEditingCoin() {
         return editingCoin;
-    }
-    public static void setEditingCoin(CoinData editingCoin) {
-        NumistaFxmlController.editingCoin = editingCoin;
-    }
-    public static Stage getNewWindowStage() {
-        return newWindowStage;
     }
 
     @PostConstruct
@@ -136,6 +131,7 @@ public class NumistaFxmlController {
         String description = fieldDescription.getText();
 
         Collection collection;
+        Coin newCoin;
 
         if (subcollectionComboBox.getValue() != null) {
             collection = subcollectionComboBox.getValue();
@@ -152,10 +148,12 @@ public class NumistaFxmlController {
 
             //Create new Coin. Then Save it to repository and add it to ObservableList
             //ObservableList allows to track changes. So, it allows immediately add changes to table
-            Coin newCoin = new Coin(collection, coin, year, country, description);
-            CoinData newCoinData = new CoinData(newCoin);
-
+            newCoin = new Coin(collection, coin, year, country, description);
             coinService.save(newCoin);
+
+            collection.getSetOfCoins().add(newCoin);
+
+            CoinData newCoinData = new CoinData(newCoin);
             coinsData.add(newCoinData);
 
             //Clear fields
@@ -167,7 +165,6 @@ public class NumistaFxmlController {
         } catch (AbstractNumistaException e) {
             WindowUtils.showAlert(e);
         }
-
 
     }
 
@@ -301,8 +298,9 @@ public class NumistaFxmlController {
             TableRow<CoinData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    editingCoin = row.getItem();
-                    newWindowStage = WindowUtils.newPopupWindow("fxml/coinTemplateFXML.fxml");
+                    editingCoin = (Coin) coinService.findById(row.getItem().getId());
+                    Stage thisStage = WindowUtils.newPopupWindow(coinView);
+                    coinViewController.init(thisStage);
                 }
             });
             return row;
@@ -313,6 +311,7 @@ public class NumistaFxmlController {
     //Inner class only for preview Data in TableView (UI)
     public class CoinData {
 
+        private Long id;
         private String collection;
         private String subcollection;
         private String coin;
@@ -333,11 +332,16 @@ public class NumistaFxmlController {
                 this.collection = coin.getCoinCollection().getName();
             }
 
+            this.id = coin.getId();
             this.coin = coin.getCoin();
             this.year = coin.getYear();
             this.country = coin.getCountry();
             this.description = coin.getDescription();
 
+        }
+
+        public Long getId() {
+            return id;
         }
 
         public String getCollection() {
@@ -364,10 +368,39 @@ public class NumistaFxmlController {
             return description;
         }
 
+        public void setId(Long id) {
+            this.id = id;
+        }
+
+        public void setCollection(String collection) {
+            this.collection = collection;
+        }
+
+        public void setSubcollection(String subcollection) {
+            this.subcollection = subcollection;
+        }
+
+        public void setCoin(String coin) {
+            this.coin = coin;
+        }
+
+        public void setYear(String year) {
+            this.year = year;
+        }
+
+        public void setCountry(String country) {
+            this.country = country;
+        }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
         @Override
         public String toString() {
             return "CoinData{" +
-                    "collection='" + collection + '\'' +
+                    "id='" + id + '\'' +
+                    ", collection='" + collection + '\'' +
                     ", subcollection='" + subcollection + '\'' +
                     ", coin='" + coin + '\'' +
                     ", year='" + year + '\'' +

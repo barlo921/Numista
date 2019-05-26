@@ -1,49 +1,33 @@
 package com.barlo.numista.utils;
 
 import com.barlo.numista.Numista;
+import com.barlo.numista.NumistaConfiguration;
 import com.barlo.numista.exception.AbstractNumistaException;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
-import java.io.IOException;
-import java.io.InputStream;
-
 public class WindowUtils {
 
     //Create new Window for different purposes
-    public static Stage newPopupWindow(final String fxml){
+    public static Stage newPopupWindow(final NumistaConfiguration.ViewHolder view){
 
-        InputStream fxmlStream;
-        Stage thisWindowStage;
+        //Set new Stage
+        Stage newWindow = new Stage();
+        //Set owner for this new window. It makes primary stage unavailable while new window is opened
+        newWindow.initModality(Modality.APPLICATION_MODAL);
+        newWindow.initOwner(Numista.getPrimaryStage().getScene().getWindow());
 
-        try {
-            fxmlStream = WindowUtils.class.getClassLoader().getResourceAsStream(fxml);
-            FXMLLoader fxmlLoader = new FXMLLoader();
-            fxmlLoader.load(fxmlStream);
-            thisWindowStage = newWindow(fxmlLoader);
-            return thisWindowStage;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        newWindow.setScene(new Scene(view.getView()));
+        newWindow.show();
 
-        return null;
+        return newWindow;
     }
 
     //Change scene in existing stage
-    public static void changeScene(final String fxml, final Stage stage) {
-        InputStream fxmlStream;
-
-        try {
-            fxmlStream = WindowUtils.class.getClassLoader().getResourceAsStream(fxml);
-            FXMLLoader loader = new FXMLLoader();
-            loader.load(fxmlStream);
-            stage.setScene(new Scene(loader.getRoot()));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    public static void changeScene(final NumistaConfiguration.ViewHolder view, final Stage stage) {
+        stage.setScene(new Scene(view.getView()));
     }
 
     //Create alert if Exception occurred
@@ -56,19 +40,6 @@ public class WindowUtils {
         alert.setContentText(e.getMessage());
 
         alert.showAndWait();
-    }
-
-    private static Stage newWindow(final FXMLLoader fxmlLoader) {
-        //Set new Stage
-        Stage newWindow = new Stage();
-        //Set owner for this new window. It makes primary stage unavailable while new window is opened
-        newWindow.initModality(Modality.APPLICATION_MODAL);
-        newWindow.initOwner(Numista.getPrimaryStage().getScene().getWindow());
-
-        newWindow.setScene(new Scene(fxmlLoader.getRoot()));
-        newWindow.show();
-
-        return newWindow;
     }
 
 }
