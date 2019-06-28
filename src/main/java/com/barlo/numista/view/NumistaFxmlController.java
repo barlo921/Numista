@@ -9,6 +9,7 @@ import com.barlo.numista.utils.WindowUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
@@ -26,20 +27,18 @@ public class NumistaFxmlController {
     @Autowired
     @Qualifier("coinService")
     private NumistaService coinService;
-
     @Autowired
     @Qualifier("collectionService")
     private NumistaService collectionService;
-
     @Autowired
     @Qualifier("coinView")
     private NumistaConfiguration.ViewHolder coinView;
-
     @Autowired
     private CoinViewController coinViewController;
-
-    //Static fields
-    private static Coin editingCoin;
+    @Autowired
+    private Coin editingCoin;
+    @Autowired
+    private Scene popupWindowScene;
 
     //Injecting from FXML
     @FXML private TableView<CoinData> coinTable;
@@ -64,11 +63,6 @@ public class NumistaFxmlController {
     private ObservableList<CoinData> coinsData;
     private ObservableList<Collection> collectionData;
     private ObservableList<Collection> subcollectionData;
-
-    //Static methods
-    public static Coin getEditingCoin() {
-        return editingCoin;
-    }
 
     @PostConstruct
     public void init(){
@@ -298,8 +292,16 @@ public class NumistaFxmlController {
             TableRow<CoinData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    editingCoin = (Coin) coinService.findById(row.getItem().getId());
-                    Stage thisStage = WindowUtils.newPopupWindow(coinView);
+                    Coin tempCoin = (Coin) coinService.findById(row.getItem().getId());
+
+                    editingCoin.setCoin(tempCoin.getCoin());
+                    editingCoin.setCoinCollection(tempCoin.getCoinCollection());
+                    editingCoin.setCountry(tempCoin.getCountry());
+                    editingCoin.setDescription(tempCoin.getDescription());
+                    editingCoin.setId(tempCoin.getId());
+                    editingCoin.setYear(tempCoin.getYear());
+
+                    Stage thisStage = WindowUtils.newPopupWindow(coinView, popupWindowScene);
                     coinViewController.init(thisStage);
                 }
             });

@@ -11,6 +11,8 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import javax.annotation.PreDestroy;
+
 public class CoinViewController {
 
     private static Stage thisStage;
@@ -23,6 +25,10 @@ public class CoinViewController {
     @Qualifier("coinEdit")
     private NumistaConfiguration.ViewHolder coinEdit;
 
+    @Autowired
+    private CoinEditController coinEditController;
+
+    @Autowired
     private Coin editingCoin;
 
     @FXML private Text coinNameText;
@@ -33,11 +39,7 @@ public class CoinViewController {
     @FXML private Text descriptionText;
 
     public void init(final Stage thisStage) {
-
-        this.thisStage = thisStage;
-
-        //Get coin from main window
-        editingCoin = NumistaFxmlController.getEditingCoin();
+        CoinViewController.thisStage = thisStage;
 
         if (editingCoin.getCoinCollection().getParentId() == null) {
             collectionText.setText((editingCoin.getCoinCollection().getName()));
@@ -58,6 +60,7 @@ public class CoinViewController {
     }
 
     public void editCoin() {
+        coinEditController.init(thisStage);
         WindowUtils.changeScene(coinEdit, thisStage);
     }
 }

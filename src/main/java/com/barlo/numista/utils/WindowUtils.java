@@ -10,8 +10,10 @@ import javafx.stage.Stage;
 
 public class WindowUtils {
 
+    private WindowUtils() {}
+
     //Create new Window for different purposes
-    public static Stage newPopupWindow(final NumistaConfiguration.ViewHolder view){
+    public static Stage newPopupWindow(final NumistaConfiguration.ViewHolder view, Scene scene){
 
         //Set new Stage
         Stage newWindow = new Stage();
@@ -19,7 +21,8 @@ public class WindowUtils {
         newWindow.initModality(Modality.APPLICATION_MODAL);
         newWindow.initOwner(Numista.getPrimaryStage().getScene().getWindow());
 
-        newWindow.setScene(new Scene(view.getView()));
+        scene.setRoot(view.getView());
+        newWindow.setScene(scene);
         newWindow.show();
 
         return newWindow;
@@ -27,7 +30,7 @@ public class WindowUtils {
 
     //Change scene in existing stage
     public static void changeScene(final NumistaConfiguration.ViewHolder view, final Stage stage) {
-        stage.setScene(new Scene(view.getView()));
+        stage.getScene().setRoot(view.getView());
     }
 
     //Create alert if Exception occurred

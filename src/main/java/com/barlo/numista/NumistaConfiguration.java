@@ -6,6 +6,7 @@ import com.barlo.numista.view.CoinViewController;
 import com.barlo.numista.view.NumistaFxmlController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,8 +43,18 @@ public class NumistaConfiguration {
     }
 
     @Bean
-    CoinEditController getCoinEditController() throws IOException{
+    public CoinEditController getCoinEditController() throws IOException{
         return (CoinEditController) getCoinEdit().getController();
+    }
+
+    @Bean
+    public Coin getEditingCoin(){
+        return new Coin();
+    }
+
+    @Bean
+    public Scene getScenePopupWindows() throws IOException {
+        return new Scene(loadView("fxml/main.fxml").getView());
     }
 
     //loadView method loads FXML UI from specified file
