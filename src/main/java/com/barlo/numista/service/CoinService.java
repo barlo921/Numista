@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @Transactional
 @Qualifier(value = "coinService")
-public class CoinService implements NumistaService {
+public class CoinService {
 
     private CoinRepository coinRepository;
 
@@ -24,18 +24,15 @@ public class CoinService implements NumistaService {
     }
 
     //Save to repository
-    @Override
-    public Object save(final Object coin) {
-       return coinRepository.save((Coin) coin);
+    public Coin save(final Coin coin) {
+       return coinRepository.save(coin);
     }
 
     //Get all objects from repository
-    @Override
     public List<Coin> findAll() {
         return coinRepository.getAll();
     }
 
-    @Override
     public Coin findById(Long id) {
         return coinRepository.get(id);
     }

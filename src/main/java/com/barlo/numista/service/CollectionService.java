@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 @Transactional
 @Qualifier(value = "collectionService")
-public class CollectionService implements NumistaService {
+public class CollectionService {
 
     private CollectionRepository collectionRepository;
 
@@ -24,18 +24,15 @@ public class CollectionService implements NumistaService {
     }
 
     //Save to repository
-    @Override
-    public Object save(final Object collection) {
-        return collectionRepository.save((Collection) collection);
+    public Collection save(final Collection collection) {
+        return collectionRepository.save(collection);
     }
 
     //Get all objects from repository
-    @Override
     public List<Collection> findAll() {
         return collectionRepository.getAll();
     }
 
-    @Override
     public Collection findById(Long id) {
         return collectionRepository.get(id);
     }

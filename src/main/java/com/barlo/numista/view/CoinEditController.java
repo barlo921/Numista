@@ -3,7 +3,8 @@ package com.barlo.numista.view;
 import com.barlo.numista.NumistaConfiguration;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
-import com.barlo.numista.service.NumistaService;
+import com.barlo.numista.service.CoinService;
+import com.barlo.numista.service.CollectionService;
 import com.barlo.numista.utils.WindowUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -23,11 +24,11 @@ public class CoinEditController {
 
     @Autowired
     @Qualifier("collectionService")
-    private NumistaService collectionService;
+    private CollectionService collectionService;
 
     @Autowired
     @Qualifier("coinService")
-    private NumistaService coinService;
+    private CoinService coinService;
 
     @Autowired
     private CoinViewController coinViewController;

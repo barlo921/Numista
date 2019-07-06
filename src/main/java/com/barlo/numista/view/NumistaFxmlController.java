@@ -1,10 +1,11 @@
 package com.barlo.numista.view;
 
 import com.barlo.numista.NumistaConfiguration;
+import com.barlo.numista.service.CoinService;
+import com.barlo.numista.service.CollectionService;
 import com.barlo.numista.utils.exception.*;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
-import com.barlo.numista.service.NumistaService;
 import com.barlo.numista.utils.WindowUtils;
 import com.barlo.numista.utils.exception.ui.CoinNameIsEmptyException;
 import com.barlo.numista.utils.exception.ui.CollectionAlreadyExistsException;
@@ -30,10 +31,10 @@ public class NumistaFxmlController {
     //Injecting from Spring
     @Autowired
     @Qualifier("coinService")
-    private NumistaService coinService;
+    private CoinService coinService;
     @Autowired
     @Qualifier("collectionService")
-    private NumistaService collectionService;
+    private CollectionService collectionService;
     @Autowired
     @Qualifier("coinView")
     private NumistaConfiguration.ViewHolder coinView;
