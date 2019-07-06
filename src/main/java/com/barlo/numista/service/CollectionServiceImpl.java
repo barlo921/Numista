@@ -32,11 +32,11 @@ public class CollectionServiceImpl implements NumistaService {
     //Get all objects from repository
     @Override
     public List<Collection> findAll() {
-        return collectionRepository.findAll();
+        return collectionRepository.getAll();
     }
 
     @Override
     public Collection findById(Long id) {
-        return collectionRepository.findById(id).get();
+        return collectionRepository.get(id);
     }
 }
