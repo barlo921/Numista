@@ -2,7 +2,7 @@ package com.barlo.numista.utils;
 
 import com.barlo.numista.Numista;
 import com.barlo.numista.NumistaConfiguration;
-import com.barlo.numista.exception.AbstractNumistaException;
+import com.barlo.numista.utils.exception.AbstractNumistaException;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Modality;
