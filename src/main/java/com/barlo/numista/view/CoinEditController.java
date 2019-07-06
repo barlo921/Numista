@@ -10,13 +10,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.PostConstruct;
 import java.util.List;
 
 public class CoinEditController {
@@ -55,7 +53,7 @@ public class CoinEditController {
     public void init(Stage thisStage){
         CoinEditController.thisStage = thisStage;
 
-        coinNameField.setText(editingCoin.getCoin());
+        coinNameField.setText(editingCoin.getName());
 
         List<Collection> collectionList = collectionService.findAll();
         //Remove all subcollections from list
@@ -78,12 +76,12 @@ public class CoinEditController {
     }
 
     public void saveCoin(){
-        editingCoin.setCoin(coinNameField.getText());
+        editingCoin.setName(coinNameField.getText());
 
         if (subcollectionChoiceBox.getValue() != null) {
-            editingCoin.setCoinCollection(subcollectionChoiceBox.getValue());
+            editingCoin.setCollection(subcollectionChoiceBox.getValue());
         } else {
-            editingCoin.setCoinCollection(collectionChoiceBox.getValue());
+            editingCoin.setCollection(collectionChoiceBox.getValue());
         }
 
         editingCoin.setYear(yearField.getText());

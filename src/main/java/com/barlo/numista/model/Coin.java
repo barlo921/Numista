@@ -1,18 +1,13 @@
 package com.barlo.numista.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 
 @Entity
 @Table(name = "coin")
-public class Coin implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Coin extends AbstractBaseEntity {
 
     @Column(nullable = false)
-    private String coin;
+    private String name;
 
     @Column
     private String year;
@@ -25,33 +20,17 @@ public class Coin implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "collection_id")
-    private Collection coinCollection;
+    private Collection collection;
 
     public Coin() {
     }
 
-    public Coin(final Collection coinCollection, final String coin, final String year, final String country, final String description) {
-        setCoinCollection(coinCollection);
-        this.coin = coin;
+    public Coin(String name, String year, String country, String description, Collection collection) {
+        this.name = name;
         this.year = year;
         this.country = country;
         this.description = description;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    public String getCoin() {
-        return coin;
-    }
-
-    public void setCoin(final String coin) {
-        this.coin = coin;
+        this.collection = collection;
     }
 
     public String getYear() {
@@ -78,26 +57,32 @@ public class Coin implements Serializable {
         this.description = description;
     }
 
-    public Collection getCoinCollection() {
-        return coinCollection;
+    public Collection getCollection() {
+        return collection;
     }
 
-    public void setCoinCollection(Collection coinCollection) {
-        this.coinCollection = coinCollection;
-        if (!coinCollection.getSetOfCoins().contains(this)) {
-            coinCollection.getSetOfCoins().add(this);
+    public void setCollection(Collection collection) {
+        this.collection = collection;
+        if (!collection.getSetOfCoins().contains(this)) {
+            collection.getSetOfCoins().add(this);
         }
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "Coin{" +
-                "id=" + id +
-                ", coin='" + coin + '\'' +
-                ", year='" + year + '\'' +
+                "year='" + year + '\'' +
                 ", country='" + country + '\'' +
                 ", description='" + description + '\'' +
-                ", coinCollection=" + coinCollection +
+                ", collection=" + collection +
                 '}';
     }
 }

@@ -1,17 +1,12 @@
 package com.barlo.numista.model;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Table(name = "collection")
-public class Collection implements Serializable {
-
-    @Id
-    @GeneratedValue
-    private Long id;
+public class Collection extends AbstractBaseEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -21,7 +16,7 @@ public class Collection implements Serializable {
 
     @OneToMany(cascade = CascadeType.ALL,
                 fetch = FetchType.EAGER,
-                mappedBy = "coinCollection")
+                mappedBy = "collection")
     private Set<Coin> setOfCoins = new HashSet<>();
 
     public Collection() {
@@ -34,14 +29,6 @@ public class Collection implements Serializable {
     public Collection(final String name, final Long parentId) {
         this.name = name;
         this.parentId = parentId;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -70,8 +57,8 @@ public class Collection implements Serializable {
 
     public void addCoin(Coin coin) {
         this.setOfCoins.add(coin);
-        if (coin.getCoinCollection() != this) {
-            coin.setCoinCollection(this);
+        if (coin.getCollection() != this) {
+            coin.setCollection(this);
         }
     }
 

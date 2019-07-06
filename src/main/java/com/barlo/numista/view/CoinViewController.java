@@ -11,8 +11,6 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-import javax.annotation.PreDestroy;
-
 public class CoinViewController {
 
     private static Stage thisStage;
@@ -41,18 +39,18 @@ public class CoinViewController {
     public void init(final Stage thisStage) {
         CoinViewController.thisStage = thisStage;
 
-        if (editingCoin.getCoinCollection().getParentId() == null) {
-            collectionText.setText((editingCoin.getCoinCollection().getName()));
+        if (editingCoin.getCollection().getParentId() == null) {
+            collectionText.setText((editingCoin.getCollection().getName()));
         }
 
-        if (editingCoin.getCoinCollection().getParentId() != null) {
-            subcollectionText.setText(editingCoin.getCoinCollection().getName());
+        if (editingCoin.getCollection().getParentId() != null) {
+            subcollectionText.setText(editingCoin.getCollection().getName());
 
-            Collection collection = (Collection) collectionService.findById(editingCoin.getCoinCollection().getParentId());
+            Collection collection = (Collection) collectionService.findById(editingCoin.getCollection().getParentId());
             collectionText.setText(collection.getName());
         }
 
-        coinNameText.setText(editingCoin.getCoin());
+        coinNameText.setText(editingCoin.getName());
         yearText.setText(editingCoin.getYear());
         countryText.setText(editingCoin.getCountry());
         descriptionText.setText(editingCoin.getDescription());

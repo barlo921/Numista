@@ -74,7 +74,7 @@ public class NumistaFxmlController {
             coinList get's all Coins from repository by CoinService.
             Then data converts to ObservableList.
 
-            Value Factories for TableColumns. It's important that parameter be exactly as get method signature e.g. "getCoin()"
+            Value Factories for TableColumns. It's important that parameter be exactly as get method signature e.g. "getName()"
 
             The same thing for ComBox (Collections List when adding coins) and
             ChoiceBox (Collection List when create new subcollection) using ObservableList.
@@ -142,7 +142,7 @@ public class NumistaFxmlController {
 
             //Create new Coin. Then Save it to repository and add it to ObservableList
             //ObservableList allows to track changes. So, it allows immediately add changes to table
-            newCoin = new Coin(collection, coin, year, country, description);
+            newCoin = new Coin(coin, year, country, description, collection);
             coinService.save(newCoin);
 
             collection.getSetOfCoins().add(newCoin);
@@ -294,8 +294,8 @@ public class NumistaFxmlController {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
                     Coin tempCoin = (Coin) coinService.findById(row.getItem().getId());
 
-                    editingCoin.setCoin(tempCoin.getCoin());
-                    editingCoin.setCoinCollection(tempCoin.getCoinCollection());
+                    editingCoin.setName(tempCoin.getName());
+                    editingCoin.setCollection(tempCoin.getCollection());
                     editingCoin.setCountry(tempCoin.getCountry());
                     editingCoin.setDescription(tempCoin.getDescription());
                     editingCoin.setId(tempCoin.getId());
@@ -323,19 +323,19 @@ public class NumistaFxmlController {
 
         public CoinData(Coin coin) {
 
-            if (coin.getCoinCollection().getParentId() != null) {
-                this.subcollection = coin.getCoinCollection().getName();
+            if (coin.getCollection().getParentId() != null) {
+                this.subcollection = coin.getCollection().getName();
 
-                Collection topLevelCollection = (Collection) collectionService.findById(coin.getCoinCollection().getParentId());
+                Collection topLevelCollection = (Collection) collectionService.findById(coin.getCollection().getParentId());
                 this.collection = topLevelCollection.getName();
             }
 
-            if (coin.getCoinCollection().getParentId() == null) {
-                this.collection = coin.getCoinCollection().getName();
+            if (coin.getCollection().getParentId() == null) {
+                this.collection = coin.getCollection().getName();
             }
 
             this.id = coin.getId();
-            this.coin = coin.getCoin();
+            this.coin = coin.getName();
             this.year = coin.getYear();
             this.country = coin.getCountry();
             this.description = coin.getDescription();
