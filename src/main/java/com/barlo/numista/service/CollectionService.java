@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 @Transactional
 @Qualifier(value = "collectionService")
-public class CollectionServiceImpl implements NumistaService {
+public class CollectionService implements NumistaService {
 
     private CollectionRepository collectionRepository;
 
     //Spring injects dependency of crud repository
     @Autowired
-    public CollectionServiceImpl(final CollectionRepository collectionRepository) {
+    public CollectionService(final CollectionRepository collectionRepository) {
         this.collectionRepository = collectionRepository;
     }
 

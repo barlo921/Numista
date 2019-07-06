@@ -13,13 +13,13 @@ import java.util.List;
 @Service
 @Transactional
 @Qualifier(value = "coinService")
-public class CoinServiceImpl implements NumistaService {
+public class CoinService implements NumistaService {
 
     private CoinRepository coinRepository;
 
     //Spring injects dependency of crud repository
     @Autowired
-    public CoinServiceImpl(final CoinRepository coinRepository) {
+    public CoinService(final CoinRepository coinRepository) {
         this.coinRepository = coinRepository;
     }
 
@@ -32,11 +32,11 @@ public class CoinServiceImpl implements NumistaService {
     //Get all objects from repository
     @Override
     public List<Coin> findAll() {
-        return coinRepository.findAll();
+        return coinRepository.getAll();
     }
 
     @Override
     public Coin findById(Long id) {
-        return coinRepository.findById(id).get();
+        return coinRepository.get(id);
     }
 }

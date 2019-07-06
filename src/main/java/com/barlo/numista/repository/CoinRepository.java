@@ -1,18 +1,21 @@
 package com.barlo.numista.repository;
 
 import com.barlo.numista.model.Coin;
-import org.springframework.data.repository.CrudRepository;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-@Transactional(propagation = Propagation.MANDATORY)
-public interface CoinRepository extends CrudRepository<Coin, Long> {
-    @Override
-    List<Coin> findAll();
+public interface CoinRepository {
 
-    @Override
-    Optional<Coin> findById(Long id);
+    Coin save(Coin coin);
+
+    boolean delete(long id);
+
+    Coin get(long id);
+
+    Coin getByName(String name);
+
+    List<Coin> getAll();
+
+    List<Coin> getAllByCollection(long collectionId);
+
 }
