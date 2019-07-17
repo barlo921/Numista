@@ -23,11 +23,9 @@ public class CoinEditController {
     private static Stage thisStage;
 
     @Autowired
-    @Qualifier("collectionService")
     private CollectionService collectionService;
 
     @Autowired
-    @Qualifier("coinService")
     private CoinService coinService;
 
     @Autowired
@@ -56,7 +54,7 @@ public class CoinEditController {
 
         coinNameField.setText(editingCoin.getName());
 
-        List<Collection> collectionList = collectionService.findAll();
+        List<Collection> collectionList = collectionService.getAll();
         //Remove all subcollections from list
         collectionList.removeIf(collection -> collection.getParentId() != null);
         collectionData = FXCollections.observableArrayList(collectionList);
@@ -64,7 +62,7 @@ public class CoinEditController {
         collectionChoiceBox.setItems(collectionData);
 
         collectionList.clear();
-        collectionList = collectionService.findAll();
+        collectionList = collectionService.getAll();
         //Remove all collections from list
         collectionList.removeIf(collection -> collection.getParentId() == null);
         subcollectionData = FXCollections.observableArrayList(collectionList);
@@ -79,17 +77,19 @@ public class CoinEditController {
     public void saveCoin(){
         editingCoin.setName(coinNameField.getText());
 
+        int collectionId;
+
         if (subcollectionChoiceBox.getValue() != null) {
-            editingCoin.setCollection(subcollectionChoiceBox.getValue());
+            collectionId = subcollectionChoiceBox.getValue().getId();
         } else {
-            editingCoin.setCollection(collectionChoiceBox.getValue());
+            collectionId = collectionChoiceBox.getValue().getId();
         }
 
         editingCoin.setYear(yearField.getText());
         editingCoin.setCountry(countryField.getText());
         editingCoin.setDescription(descriptionField.getText());
 
-        coinService.save(editingCoin);
+        coinService.update(editingCoin, collectionId);
 
         WindowUtils.changeScene(coinView, thisStage);
     }

@@ -30,10 +30,8 @@ public class NumistaFxmlController {
 
     //Injecting from Spring
     @Autowired
-    @Qualifier("coinService")
     private CoinService coinService;
     @Autowired
-    @Qualifier("collectionService")
     private CollectionService collectionService;
     @Autowired
     @Qualifier("coinView")
@@ -102,7 +100,7 @@ public class NumistaFxmlController {
             ObservableList collectionData is filled only with top-level collections.
             Subcollections were removed before adding.
         */
-        List<Collection> collectionList = collectionService.findAll();
+        List<Collection> collectionList = collectionService.getAll();
         //Remove all subcollections from list
         collectionList.removeIf(collection -> collection.getParentId() != null);
         collectionData = FXCollections.observableArrayList(collectionList);
@@ -111,7 +109,7 @@ public class NumistaFxmlController {
         collectionToSubcollectionSelector.setItems(collectionData);
 
         collectionList.clear();
-        collectionList = collectionService.findAll();
+        collectionList = collectionService.getAll();
         //Remove all collections from list
         collectionList.removeIf(collection -> collection.getParentId() == null);
         subcollectionData = FXCollections.observableArrayList(collectionList);
@@ -147,10 +145,8 @@ public class NumistaFxmlController {
 
             //Create new Coin. Then Save it to repository and add it to ObservableList
             //ObservableList allows to track changes. So, it allows immediately add changes to table
-            newCoin = new Coin(coin, year, country, description, collection);
-            coinService.save(newCoin);
-
-            collection.getSetOfCoins().add(newCoin);
+            newCoin = new Coin(coin, year, country, description);
+            coinService.create(newCoin, collection.getId());
 
             CoinData newCoinData = new CoinData(newCoin);
             coinsData.add(newCoinData);
@@ -199,7 +195,7 @@ public class NumistaFxmlController {
                     throw new CollectionIsNotSetException();
                 } else {
                     newCollection = new Collection(newCollectionName, parentCollection.getId());
-                    collectionService.save(newCollection);
+                    collectionService.create(newCollection);
                     subcollectionData.add(newCollection);
                 }
 
@@ -207,7 +203,7 @@ public class NumistaFxmlController {
                 newCollection = new Collection(newCollectionName);
 
                 //Add Collection to repository and ObservableList of ComboBox.
-                collectionService.save(newCollection);
+                collectionService.create(newCollection);
                 collectionData.add(newCollection);
 
             }
@@ -262,7 +258,7 @@ public class NumistaFxmlController {
         subcollectionComboBox.getItems().clear();
 
         //Get all collections from repository
-        List<Collection> subcollectionList = collectionService.findAll();
+        List<Collection> subcollectionList = collectionService.getAll();
 
         //Get top-level collection specified in ComoBox
         Collection topLevelCollection = collectionComboBox.getValue();
@@ -318,7 +314,7 @@ public class NumistaFxmlController {
     //Inner class only for preview Data in TableView (UI)
     public class CoinData {
 
-        private Long id;
+        private Integer id;
         private String collection;
         private String subcollection;
         private String coin;
@@ -331,7 +327,7 @@ public class NumistaFxmlController {
             if (coin.getCollection().getParentId() != null) {
                 this.subcollection = coin.getCollection().getName();
 
-                Collection topLevelCollection = (Collection) collectionService.findById(coin.getCollection().getParentId());
+                Collection topLevelCollection = (Collection) collectionService.get(coin.getCollection().getParentId());
                 this.collection = topLevelCollection.getName();
             }
 
@@ -347,7 +343,7 @@ public class NumistaFxmlController {
 
         }
 
-        public Long getId() {
+        public Integer getId() {
             return id;
         }
 
@@ -375,7 +371,7 @@ public class NumistaFxmlController {
             return description;
         }
 
-        public void setId(Long id) {
+        public void setId(Integer id) {
             this.id = id;
         }
 
@@ -406,7 +402,7 @@ public class NumistaFxmlController {
         @Override
         public String toString() {
             return "CoinData{" +
-                    "id='" + id + '\'' +
+                    "collectionId='" + id + '\'' +
                     ", collection='" + collection + '\'' +
                     ", subcollection='" + subcollection + '\'' +
                     ", coin='" + coin + '\'' +

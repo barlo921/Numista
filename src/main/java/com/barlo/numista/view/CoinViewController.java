@@ -16,7 +16,6 @@ public class CoinViewController {
     private static Stage thisStage;
 
     @Autowired
-    @Qualifier("collectionService")
     private CollectionService collectionService;
 
     @Autowired
@@ -46,7 +45,7 @@ public class CoinViewController {
         if (editingCoin.getCollection().getParentId() != null) {
             subcollectionText.setText(editingCoin.getCollection().getName());
 
-            Collection collection = (Collection) collectionService.findById(editingCoin.getCollection().getParentId());
+            Collection collection = (Collection) collectionService.get(editingCoin.getCollection().getParentId());
             collectionText.setText(collection.getName());
         }
 

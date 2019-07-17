@@ -11,8 +11,6 @@ import java.util.List;
 
 //Service implementation for Coin Repository
 @Service
-@Transactional
-@Qualifier(value = "coinService")
 public class CoinService {
 
     private CoinRepository coinRepository;
@@ -24,8 +22,16 @@ public class CoinService {
     }
 
     //Save to repository
-    public Coin save(final Coin coin) {
-       return coinRepository.save(coin);
+    public Coin save(final Coin coin, int collectionId) {
+       return coinRepository.save(coin, collectionId);
+    }
+
+    public Coin create(Coin coin, int collectionId) {
+        return coinRepository.save(coin, collectionId);
+    }
+
+    public Coin update(Coin coin, int collectionId) {
+        return coinRepository.save(coin, collectionId);
     }
 
     //Get all objects from repository
@@ -33,7 +39,7 @@ public class CoinService {
         return coinRepository.getAll();
     }
 
-    public Coin findById(Long id) {
+    public Coin findById(Integer id) {
         return coinRepository.get(id);
     }
 }

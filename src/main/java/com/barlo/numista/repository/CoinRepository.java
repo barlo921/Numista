@@ -6,16 +6,16 @@ import java.util.List;
 
 public interface CoinRepository {
 
-    Coin save(Coin coin);
+    Coin save(Coin coin, int collectionId);
 
-    boolean delete(long id);
+    boolean delete(int id);
 
-    Coin get(long id);
+    Coin get(int id);
 
     Coin getByName(String name);
 
     List<Coin> getAll();
 
-    List<Coin> getAllByCollection(long collectionId);
+    List<Coin> getAllByCollection(int collectionId);
 
 }

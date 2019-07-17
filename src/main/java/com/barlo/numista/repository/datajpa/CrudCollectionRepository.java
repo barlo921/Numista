@@ -10,12 +10,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudCollectionRepository extends JpaRepository<Collection, Long> {
+@Transactional(readOnly = true)
+public interface CrudCollectionRepository extends JpaRepository<Collection, Integer> {
 
     @Transactional
     @Modifying
     @Query(value = "DELETE FROM Collection c WHERE c.id=:id")
-    int delete(@Param("id") long id);
+    int delete(@Param("id") int id);
 
     @Query(value = "SELECT c FROM Collection c WHERE c.name=:name")
     Optional<Collection> findByName(@Param("name") String name);
@@ -24,6 +25,6 @@ public interface CrudCollectionRepository extends JpaRepository<Collection, Long
     List<Collection> findAllTopLevel();
 
     @Query(value = "SELECT c FROM Collection c WHERE c.parentId=:parent_id")
-    List<Collection> findSubLevele(@Param("parent_id") long parentId);
+    List<Collection> findSubLevel(@Param("parent_id") int parentId);
 
 }

@@ -23,17 +23,18 @@ public class DataJpaCollectionRepository implements CollectionRepository {
     }
 
     @Override
+    @Transactional
     public Collection save(Collection collection) {
         return repository.save(collection);
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(int id) {
         return repository.delete(id) != 0;
     }
 
     @Override
-    public Collection get(long id) {
+    public Collection get(int id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -53,7 +54,7 @@ public class DataJpaCollectionRepository implements CollectionRepository {
     }
 
     @Override
-    public List<Collection> getSubLevel(long parentId) {
-        return repository.findSubLevele(parentId);
+    public List<Collection> getSubLevel(int parentId) {
+        return repository.findSubLevel(parentId);
     }
 }

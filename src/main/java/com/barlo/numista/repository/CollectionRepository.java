@@ -3,15 +3,14 @@ package com.barlo.numista.repository;
 import com.barlo.numista.model.Collection;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface CollectionRepository {
 
     Collection save(Collection collection);
 
-    boolean delete(long id);
+    boolean delete(int id);
 
-    Collection get(long id);
+    Collection get(int id);
 
     Collection getByName(String name);
 
@@ -19,6 +18,6 @@ public interface CollectionRepository {
 
     List<Collection> getAllTopLevel();
 
-    List<Collection> getSubLevel(long parentId);
+    List<Collection> getSubLevel(int parentId);
 
 }

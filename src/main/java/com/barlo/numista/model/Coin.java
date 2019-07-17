@@ -1,9 +1,11 @@
 package com.barlo.numista.model;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 
 @Entity
-@Table(name = "coin")
+@Table(name = "coins")
 public class Coin extends AbstractBaseEntity {
 
     @Column(nullable = false)
@@ -18,8 +20,9 @@ public class Coin extends AbstractBaseEntity {
     @Column
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "collection_id")
+    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Collection.class)
+    @JoinColumn(name = "collection_id", nullable = false)
+    @NotNull
     private Collection collection;
 
     public Coin() {
@@ -31,6 +34,13 @@ public class Coin extends AbstractBaseEntity {
         this.country = country;
         this.description = description;
         this.collection = collection;
+    }
+
+    public Coin(String name, String year, String country, String description) {
+        this.name = name;
+        this.year = year;
+        this.country = country;
+        this.description = description;
     }
 
     public String getYear() {
@@ -79,10 +89,12 @@ public class Coin extends AbstractBaseEntity {
     @Override
     public String toString() {
         return "Coin{" +
-                "year='" + year + '\'' +
+                "name='" + name + '\'' +
+                ", year='" + year + '\'' +
                 ", country='" + country + '\'' +
                 ", description='" + description + '\'' +
                 ", collection=" + collection +
+                ", collectionId=" + id +
                 '}';
     }
 }

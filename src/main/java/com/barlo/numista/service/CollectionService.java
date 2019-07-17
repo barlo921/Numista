@@ -3,37 +3,41 @@ package com.barlo.numista.service;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.repository.CollectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+
+import static com.barlo.numista.utils.ValidationUtils.checkNotFoundWithId;
+import static com.barlo.numista.utils.ValidationUtils.checkNotFound;
 
 import java.util.List;
 
-//Service implementation for Collection Repository
 @Service
-@Transactional
-@Qualifier(value = "collectionService")
 public class CollectionService {
 
-    private CollectionRepository collectionRepository;
+    private CollectionRepository repository;
 
-    //Spring injects dependency of crud repository
     @Autowired
-    public CollectionService(final CollectionRepository collectionRepository) {
-        this.collectionRepository = collectionRepository;
+    public CollectionService(final CollectionRepository repository) {
+        this.repository = repository;
     }
 
-    //Save to repository
-    public Collection save(final Collection collection) {
-        return collectionRepository.save(collection);
+    public Collection create(Collection collection) {
+        return repository.save(collection);
     }
 
-    //Get all objects from repository
-    public List<Collection> findAll() {
-        return collectionRepository.getAll();
+    public void update(Collection collection) {
+        checkNotFoundWithId(repository.save(collection), collection.getId());
     }
 
-    public Collection findById(Long id) {
-        return collectionRepository.get(id);
+    public Collection get(Integer id) {
+        return checkNotFoundWithId(repository.get(id), id);
     }
+
+    public Collection getByName(String name) {
+        return checkNotFound(repository.getByName(name), "name=" + name);
+    }
+
+    public List<Collection> getAll() {
+        return repository.getAll();
+    }
+
 }

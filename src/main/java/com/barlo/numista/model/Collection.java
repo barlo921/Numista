@@ -1,23 +1,22 @@
 package com.barlo.numista.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "collection")
+@Table(name = "collections", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "collections_unique_name_idx")})
 public class Collection extends AbstractBaseEntity {
 
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column
-    private Long parentId;
+    @Column(name = "parent_id")
+    private Integer parentId;
 
     @OneToMany(cascade = CascadeType.ALL,
                 fetch = FetchType.EAGER,
                 mappedBy = "collection")
-    private Set<Coin> setOfCoins = new HashSet<>();
+    private Set<Coin> setOfCoins;
 
     public Collection() {
     }
@@ -26,7 +25,12 @@ public class Collection extends AbstractBaseEntity {
         this.name = name;
     }
 
-    public Collection(final String name, final Long parentId) {
+    public Collection(Integer id, String name) {
+        super(id);
+        this.name = name;
+    }
+
+    public Collection(final String name, final Integer parentId) {
         this.name = name;
         this.parentId = parentId;
     }
@@ -39,11 +43,11 @@ public class Collection extends AbstractBaseEntity {
         this.name = name;
     }
 
-    public Long getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public void setParentId(final Long parentId) {
+    public void setParentId(final Integer parentId) {
         this.parentId = parentId;
     }
 

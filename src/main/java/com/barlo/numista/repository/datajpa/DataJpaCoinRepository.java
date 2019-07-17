@@ -5,33 +5,39 @@ import com.barlo.numista.repository.CoinRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Repository
+@Transactional(readOnly = true)
 public class DataJpaCoinRepository implements CoinRepository {
 
     private static final Sort SORT_COLLECTION_NAME = new Sort(Sort.Direction.DESC, "collection.name", "name");
 
     private CrudCoinRepository repository;
+    private CrudCollectionRepository collectionRepository;
 
     @Autowired
-    public DataJpaCoinRepository(CrudCoinRepository repository) {
+    public DataJpaCoinRepository(CrudCoinRepository repository, CrudCollectionRepository collectionRepository) {
         this.repository = repository;
+        this.collectionRepository = collectionRepository;
     }
 
     @Override
-    public Coin save(Coin coin) {
+    @Transactional
+    public Coin save(Coin coin, int collectionId) {
+        coin.setCollection(collectionRepository.getOne(collectionId));
         return repository.save(coin);
     }
 
     @Override
-    public boolean delete(long id) {
+    public boolean delete(int id) {
         return repository.delete(id) != 0;
     }
 
     @Override
-    public Coin get(long id) {
+    public Coin get(int id) {
         return repository.findById(id).orElse(null);
     }
 
@@ -46,7 +52,7 @@ public class DataJpaCoinRepository implements CoinRepository {
     }
 
     @Override
-    public List<Coin> getAllByCollection(long collectionId) {
+    public List<Coin> getAllByCollection(int collectionId) {
         return repository.findByCollection(collectionId);
     }
 }
