@@ -45,7 +45,7 @@ public class CoinViewController {
         if (editingCoin.getCollection().getParentId() != null) {
             subcollectionText.setText(editingCoin.getCollection().getName());
 
-            Collection collection = (Collection) collectionService.get(editingCoin.getCollection().getParentId());
+            Collection collection = collectionService.get(editingCoin.getCollection().getParentId());
             collectionText.setText(collection.getName());
         }
 

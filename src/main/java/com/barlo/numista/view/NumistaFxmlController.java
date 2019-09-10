@@ -3,6 +3,7 @@ package com.barlo.numista.view;
 import com.barlo.numista.NumistaConfiguration;
 import com.barlo.numista.service.CoinService;
 import com.barlo.numista.service.CollectionService;
+import com.barlo.numista.utils.CollectionUtil;
 import com.barlo.numista.utils.exception.*;
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
@@ -24,6 +25,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.PostConstruct;
+import java.util.Collections;
 import java.util.List;
 
 public class NumistaFxmlController {
@@ -42,6 +44,8 @@ public class NumistaFxmlController {
     private Coin editingCoin;
     @Autowired
     private Scene popupWindowScene;
+    @Autowired
+    private CollectionUtil collectionUtil;
 
     //Injecting from FXML
     @FXML private TableView<CoinData> coinTable;
@@ -89,7 +93,7 @@ public class NumistaFxmlController {
         //Table columns
         collectionColumn.setCellValueFactory(new PropertyValueFactory<>("collection"));
         subcollectionColumn.setCellValueFactory(new PropertyValueFactory<>("subcollection"));
-        coinColumn.setCellValueFactory(new PropertyValueFactory<>("coin"));
+        coinColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         countryColumn.setCellValueFactory(new PropertyValueFactory<>("country"));
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -100,19 +104,11 @@ public class NumistaFxmlController {
             ObservableList collectionData is filled only with top-level collections.
             Subcollections were removed before adding.
         */
-        List<Collection> collectionList = collectionService.getAll();
-        //Remove all subcollections from list
-        collectionList.removeIf(collection -> collection.getParentId() != null);
-        collectionData = FXCollections.observableArrayList(collectionList);
-
+        collectionData = collectionUtil.getAllTopLevel();
         collectionComboBox.setItems(collectionData);
         collectionToSubcollectionSelector.setItems(collectionData);
 
-        collectionList.clear();
-        collectionList = collectionService.getAll();
-        //Remove all collections from list
-        collectionList.removeIf(collection -> collection.getParentId() == null);
-        subcollectionData = FXCollections.observableArrayList(collectionList);
+        subcollectionData = FXCollections.observableArrayList(Collections.EMPTY_LIST);
         subcollectionComboBox.setItems(subcollectionData);
 
     }
@@ -186,7 +182,6 @@ public class NumistaFxmlController {
                 throw new CollectionNameIsEmptyException();
             }
 
-
             if (subcollectionCheckBox.isSelected()) {
 
                 Collection parentCollection = collectionToSubcollectionSelector.getValue();
@@ -242,47 +237,31 @@ public class NumistaFxmlController {
     @FXML
     //If Subcollection CheckBox is selected then collection selector become enable.
     public void checkSubcollectionCheckBox() {
-
         if (subcollectionCheckBox.isSelected()) {
             collectionToSubcollectionSelector.setDisable(false);
         } else {
             collectionToSubcollectionSelector.setDisable(true);
         }
-
     }
 
     //Subcollection ComboBox must contain only sub collections of specified collection
     private void subcollectionFilter() {
-
         //First clear ComboBox items to prevent choose sub collection from different top-level collection
         subcollectionComboBox.getItems().clear();
-
-        //Get all collections from repository
-        List<Collection> subcollectionList = collectionService.getAll();
 
         //Get top-level collection specified in ComoBox
         Collection topLevelCollection = collectionComboBox.getValue();
 
-        //Remove all top-level collections
-        subcollectionList.removeIf(collection -> collection.getParentId() == null);
-
-        //Remove all sub collections not parented to top-level collection specified in ComboBox
-        subcollectionList.removeIf(collection -> collection.getParentId() != topLevelCollection.getId());
-
         //Add filtered List to ObservableList
-        subcollectionData.setAll(subcollectionList);
-
+        subcollectionData.setAll(collectionUtil.getSubLevel(topLevelCollection.getId()));
     }
 
     //Connection between coins and collections
     private void coinToCollectionMapping(final List<Coin> coinsList) {
-
         for (Coin coin :
                 coinsList) {
             coinsData.add(new CoinData(coin));
         }
-
-
     }
 
     //Set event when double click on coin row. It will open window with all information about coin.
@@ -293,7 +272,7 @@ public class NumistaFxmlController {
             TableRow<CoinData> row = new TableRow<>();
             row.setOnMouseClicked(event -> {
                 if (event.getClickCount() == 2 && !row.isEmpty()) {
-                    Coin tempCoin = (Coin) coinService.findById(row.getItem().getId());
+                    Coin tempCoin = coinService.findById(row.getItem().getId());
 
                     editingCoin.setName(tempCoin.getName());
                     editingCoin.setCollection(tempCoin.getCollection());
@@ -317,7 +296,7 @@ public class NumistaFxmlController {
         private Integer id;
         private String collection;
         private String subcollection;
-        private String coin;
+        private String name;
         private String year;
         private String country;
         private String description;
@@ -327,7 +306,7 @@ public class NumistaFxmlController {
             if (coin.getCollection().getParentId() != null) {
                 this.subcollection = coin.getCollection().getName();
 
-                Collection topLevelCollection = (Collection) collectionService.get(coin.getCollection().getParentId());
+                Collection topLevelCollection = collectionService.get(coin.getCollection().getParentId());
                 this.collection = topLevelCollection.getName();
             }
 
@@ -336,7 +315,7 @@ public class NumistaFxmlController {
             }
 
             this.id = coin.getId();
-            this.coin = coin.getName();
+            this.name = coin.getName();
             this.year = coin.getYear();
             this.country = coin.getCountry();
             this.description = coin.getDescription();
@@ -355,8 +334,8 @@ public class NumistaFxmlController {
             return subcollection;
         }
 
-        public String getCoin() {
-            return coin;
+        public String getName() {
+            return name;
         }
 
         public String getYear() {
@@ -383,8 +362,8 @@ public class NumistaFxmlController {
             this.subcollection = subcollection;
         }
 
-        public void setCoin(String coin) {
-            this.coin = coin;
+        public void setName(String coin) {
+            this.name = coin;
         }
 
         public void setYear(String year) {
@@ -405,7 +384,7 @@ public class NumistaFxmlController {
                     "collectionId='" + id + '\'' +
                     ", collection='" + collection + '\'' +
                     ", subcollection='" + subcollection + '\'' +
-                    ", coin='" + coin + '\'' +
+                    ", coin='" + name + '\'' +
                     ", year='" + year + '\'' +
                     ", country='" + country + '\'' +
                     ", description='" + description + '\'' +

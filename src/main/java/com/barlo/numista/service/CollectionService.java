@@ -40,4 +40,12 @@ public class CollectionService {
         return repository.getAll();
     }
 
+    public List<Collection> getAllTopLevel() {
+        return repository.getAllTopLevel();
+    }
+
+    public List<Collection> getSubLevel(int parentId) {
+        return repository.getSubLevel(parentId);
+    }
+
 }

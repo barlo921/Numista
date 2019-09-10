@@ -5,6 +5,7 @@ import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.service.CoinService;
 import com.barlo.numista.service.CollectionService;
+import com.barlo.numista.utils.CollectionUtil;
 import com.barlo.numista.utils.WindowUtils;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.stage.Stage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.util.Collections;
 import java.util.List;
 
 public class CoinEditController {
@@ -24,16 +26,15 @@ public class CoinEditController {
 
     @Autowired
     private CollectionService collectionService;
-
     @Autowired
     private CoinService coinService;
-
     @Autowired
     private CoinViewController coinViewController;
-
     @Autowired
     @Qualifier("coinView")
     private NumistaConfiguration.ViewHolder coinView;
+    @Autowired
+    private CollectionUtil collectionUtil;
 
     @FXML private TextField coinNameField;
     @FXML private ChoiceBox<Collection> collectionChoiceBox;
@@ -54,18 +55,10 @@ public class CoinEditController {
 
         coinNameField.setText(editingCoin.getName());
 
-        List<Collection> collectionList = collectionService.getAll();
-        //Remove all subcollections from list
-        collectionList.removeIf(collection -> collection.getParentId() != null);
-        collectionData = FXCollections.observableArrayList(collectionList);
-
+        collectionData = collectionUtil.getAllTopLevel();
         collectionChoiceBox.setItems(collectionData);
 
-        collectionList.clear();
-        collectionList = collectionService.getAll();
-        //Remove all collections from list
-        collectionList.removeIf(collection -> collection.getParentId() == null);
-        subcollectionData = FXCollections.observableArrayList(collectionList);
+        subcollectionData = FXCollections.observableArrayList(Collections.EMPTY_LIST);
         subcollectionChoiceBox.setItems(subcollectionData);
 
         yearField.setText(editingCoin.getYear());
@@ -74,6 +67,7 @@ public class CoinEditController {
 
     }
 
+    @FXML
     public void saveCoin(){
         editingCoin.setName(coinNameField.getText());
 
@@ -92,6 +86,12 @@ public class CoinEditController {
         coinService.update(editingCoin, collectionId);
 
         WindowUtils.changeScene(coinView, thisStage);
+    }
+
+    @FXML
+    public void subcollectionFilter() {
+        subcollectionData.clear();
+        subcollectionData.setAll(collectionUtil.getSubLevel(collectionChoiceBox.getValue().getId()));
     }
 
     public void browseImage(){

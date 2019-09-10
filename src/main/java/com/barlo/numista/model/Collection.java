@@ -35,6 +35,13 @@ public class Collection extends AbstractBaseEntity {
         this.parentId = parentId;
     }
 
+    public Collection(Integer id, String name, Integer parentId) {
+        super(id);
+        this.name = name;
+        this.parentId = parentId;
+        this.setOfCoins = setOfCoins;
+    }
+
     public String getName() {
         return name;
     }
@@ -68,6 +75,9 @@ public class Collection extends AbstractBaseEntity {
 
     @Override
     public String toString() {
-        return name;
+        return "Collection{" +
+                "name='" + name + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

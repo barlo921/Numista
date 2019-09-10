@@ -43,6 +43,15 @@ public class Coin extends AbstractBaseEntity {
         this.description = description;
     }
 
+    public Coin(Integer id, String name, String year, String country, String description, Collection collection) {
+        super(id);
+        this.name = name;
+        this.year = year;
+        this.country = country;
+        this.description = description;
+        this.collection = collection;
+    }
+
     public String getYear() {
         return year;
     }
@@ -94,7 +103,7 @@ public class Coin extends AbstractBaseEntity {
                 ", country='" + country + '\'' +
                 ", description='" + description + '\'' +
                 ", collection=" + collection +
-                ", collectionId=" + id +
+                ", id=" + id +
                 '}';
     }
 }

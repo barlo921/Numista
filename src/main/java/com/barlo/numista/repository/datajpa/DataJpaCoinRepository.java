@@ -13,7 +13,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class DataJpaCoinRepository implements CoinRepository {
 
-    private static final Sort SORT_COLLECTION_NAME = new Sort(Sort.Direction.DESC, "collection.name", "name");
+    private static final Sort SORT_COLLECTION_NAME = new Sort(Sort.Direction.ASC, "collection.name", "name");
 
     private CrudCoinRepository repository;
     private CrudCollectionRepository collectionRepository;

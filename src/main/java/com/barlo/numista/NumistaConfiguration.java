@@ -1,6 +1,7 @@
 package com.barlo.numista;
 
 import com.barlo.numista.model.Coin;
+import com.barlo.numista.utils.CollectionUtil;
 import com.barlo.numista.view.CoinEditController;
 import com.barlo.numista.view.CoinViewController;
 import com.barlo.numista.view.NumistaFxmlController;
@@ -55,6 +56,11 @@ public class NumistaConfiguration {
     @Bean
     public Scene getScenePopupWindows() throws IOException {
         return new Scene(loadView("fxml/main.fxml").getView());
+    }
+
+    @Bean
+    public CollectionUtil getCollectionUtil() {
+        return CollectionUtil.getBean();
     }
 
     //loadView method loads FXML UI from specified file
