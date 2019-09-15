@@ -5,11 +5,9 @@ import com.barlo.numista.model.Collection;
 import com.barlo.numista.utils.exception.logic.NotFoundException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
 import static com.barlo.numista.CollectionTestData.*;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CollectionServiceTest extends AbstractTest {
 
     @Autowired

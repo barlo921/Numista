@@ -5,13 +5,11 @@ import com.barlo.numista.CoinTestData;
 import com.barlo.numista.model.Coin;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 
 import static com.barlo.numista.CoinTestData.*;
 import static com.barlo.numista.CollectionTestData.*;
 import static org.junit.Assert.*;
 
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class CoinServiceTest extends AbstractTest {
 
     @Autowired
