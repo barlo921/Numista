@@ -15,7 +15,7 @@ CREATE TABLE coins (
                        id          INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
                        collection_id     INTEGER   NOT NULL,
                        name        VARCHAR         NOT NULL,
-                       year        VARCHAR                   ,
+                       year        INTEGER                   ,
                        country     VARCHAR                   ,
                        description VARCHAR                   ,
                        FOREIGN KEY (collection_id) REFERENCES collections (id) ON DELETE CASCADE
@@ -26,5 +26,5 @@ INSERT INTO collections (name, parent_id) VALUES
 ('2 Euro', 1);
 
 INSERT INTO coins (name, year, country, description, collection_id)
-VALUES ('Flag', '2018', 'Malta', '', 2),
-       ('Roman', '2009', 'Italy', '', 2);
+VALUES ('Flag', 2018, 'Malta', '', 2),
+       ('Roman', 2009, 'Italy', '', 2);

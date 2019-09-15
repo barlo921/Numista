@@ -1,7 +1,7 @@
 package com.barlo.numista;
 
 import com.barlo.numista.model.Coin;
-import com.barlo.numista.utils.CollectionUtil;
+import com.barlo.numista.utils.CoinUtil;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,8 +14,8 @@ public class NumistaConfiguration {
     }
 
     @Bean
-    public CollectionUtil getCollectionUtil() {
-        return CollectionUtil.getBean();
+    public CoinUtil getCoinUtil() {
+        return new CoinUtil();
     }
 
 }

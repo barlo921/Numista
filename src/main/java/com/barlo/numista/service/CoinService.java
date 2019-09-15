@@ -30,11 +30,11 @@ public class CoinService {
     }
 
     //Get all objects from repository
-    public List<Coin> findAll() {
+    public List<Coin> getAll() {
         return repository.getAll();
     }
 
-    public Coin findById(Integer id) {
+    public Coin getById(Integer id) {
         return checkNotFoundWithId(repository.get(id), id);
     }
 }

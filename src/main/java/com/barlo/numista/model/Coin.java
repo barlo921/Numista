@@ -12,7 +12,7 @@ public class Coin extends AbstractBaseEntity {
     private String name;
 
     @Column
-    private String year;
+    private int year;
 
     @Column
     private String country;
@@ -28,7 +28,7 @@ public class Coin extends AbstractBaseEntity {
     public Coin() {
     }
 
-    public Coin(String name, String year, String country, String description, Collection collection) {
+    public Coin(String name, int year, String country, String description, Collection collection) {
         this.name = name;
         this.year = year;
         this.country = country;
@@ -36,14 +36,14 @@ public class Coin extends AbstractBaseEntity {
         this.collection = collection;
     }
 
-    public Coin(String name, String year, String country, String description) {
+    public Coin(String name, int year, String country, String description) {
         this.name = name;
         this.year = year;
         this.country = country;
         this.description = description;
     }
 
-    public Coin(Integer id, String name, String year, String country, String description, Collection collection) {
+    public Coin(Integer id, String name, int year, String country, String description, Collection collection) {
         super(id);
         this.name = name;
         this.year = year;
@@ -52,11 +52,11 @@ public class Coin extends AbstractBaseEntity {
         this.collection = collection;
     }
 
-    public String getYear() {
+    public int getYear() {
         return year;
     }
 
-    public void setYear(final String year) {
+    public void setYear(final int year) {
         this.year = year;
     }
 

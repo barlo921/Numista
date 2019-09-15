@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import static com.barlo.numista.CoinTestData.*;
 import static com.barlo.numista.CollectionTestData.*;
-import static org.junit.Assert.*;
 
 public class CoinServiceTest extends AbstractTest {
 
@@ -29,16 +28,16 @@ public class CoinServiceTest extends AbstractTest {
         Coin updated = CoinTestData.getUpdated();
         updated.setId(update.getId());
         service.update(updated, COLLECTION2.getId());
-        assertMatch(service.findById(update.getId()), updated);
+        assertMatch(service.getById(update.getId()), updated);
     }
 
     @Test
     public void findAllTest() {
-        assertMatch(service.findAll(), COINS);
+        assertMatch(service.getAll(), COINS);
     }
 
     @Test
     public void findByIdTest() {
-        assertMatch(service.findById(COIN1_ID), COIN1);
+        assertMatch(service.getById(COIN1_ID), COIN1);
     }
 }
