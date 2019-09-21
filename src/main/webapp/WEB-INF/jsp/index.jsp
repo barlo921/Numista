@@ -9,6 +9,6 @@
 <p align="center">
     <h1>WORK IN PROGRESS</h1>
 </p>
-<a href="/numista">To Collection</a>
+<a href="numista">To Collection</a>
 </body>
 </html>
