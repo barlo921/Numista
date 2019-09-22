@@ -1,0 +1,28 @@
+.main_btns {
+    display: flex;
+}
+
+table {
+    border-collapse: collapse;
+    border: 1px solid black;
+    font:14px normal Arial,sans-serif;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 10px;
+}
+
+tbody tr:nth-child(even){
+    background:#ECF0F1;
+}
+
+tbody tr:hover{
+    background:#BDC3C7;
+    color:#FFFFFF;
+}
+
+.collection thead{
+    color: white;
+    background:#007399;
+}

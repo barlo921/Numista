@@ -1,5 +1,6 @@
 package com.barlo.numista.web;
 
+import com.barlo.numista.model.Coin;
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.service.CollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,13 @@ public class JspNumistaController {
         model.addAttribute("collections", collectionService.getAllTopLevel());
         model.addAttribute("collection", collectionService.get(getId(request)));
         return "collectionForm";
+    }
+
+    @GetMapping("/coin/create")
+    public String createCoin(Model model) {
+        model.addAttribute("coin", new Coin());
+        model.addAttribute("topLevelCollections", collectionService.getAllTopLevel());
+        return "coinForm";
     }
 
     private int getId(HttpServletRequest request) {

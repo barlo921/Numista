@@ -3,6 +3,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html>
 <head>
+    <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
     <title>Collection</title>
 </head>
 <body>
@@ -37,7 +38,7 @@
         </select>
         <br/>
         <button type="submit">${collection.isNew() ? 'Create' : 'Update'}</button>
-        <button onclick="window.history.back()">Cancel</button>
+        <button type="button" onclick="window.history.back()">Cancel</button>
 </form>
 
 <script type="text/javascript">

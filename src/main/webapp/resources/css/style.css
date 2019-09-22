@@ -1,0 +1,19 @@
+body{
+    font:1.2em normal Arial,sans-serif;
+    color:#34495E;
+}
+
+button {
+    color: white;
+    border: none;
+    margin: 5px;
+    background-color: #007399;
+    padding: 7px 12px;
+    border-radius: 6px;
+    font:15px bolder Arial,sans-serif;
+}
+
+button:hover {
+    background-color: #0086b3;
+    box-shadow: 0 5px 7px 0 rgba(0,0,0,0.24), 0 10px 25px 0 rgba(0,0,0,0.19);
+}
