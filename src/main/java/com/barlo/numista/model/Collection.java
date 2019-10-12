@@ -13,9 +13,9 @@ public class Collection extends AbstractBaseEntity {
     @Column(name = "parent_id")
     private Integer parentId;
 
-    @OneToMany(cascade = CascadeType.ALL,
-                fetch = FetchType.EAGER,
-                mappedBy = "collection")
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "collection")
     private Set<Coin> setOfCoins;
 
     public Collection() {

@@ -12,7 +12,7 @@ public class Coin extends AbstractBaseEntity {
     private String name;
 
     @Column
-    private int year;
+    private Integer year;
 
     @Column
     private String country;
@@ -20,7 +20,9 @@ public class Coin extends AbstractBaseEntity {
     @Column
     private String description;
 
-    @ManyToOne(fetch = FetchType.EAGER, targetEntity = Collection.class)
+    @ManyToOne(fetch = FetchType.EAGER,
+            targetEntity = Collection.class,
+            cascade = CascadeType.ALL)
     @JoinColumn(name = "collection_id", nullable = false)
     @NotNull
     private Collection collection;
@@ -52,11 +54,11 @@ public class Coin extends AbstractBaseEntity {
         this.collection = collection;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
-    public void setYear(final int year) {
+    public void setYear(final Integer year) {
         this.year = year;
     }
 

@@ -17,3 +17,13 @@ button:hover {
     background-color: #0086b3;
     box-shadow: 0 5px 7px 0 rgba(0,0,0,0.24), 0 10px 25px 0 rgba(0,0,0,0.19);
 }
+
+.ajaxText {
+    font:0.8em normal Arial,sans-serif;
+    color: red;
+}
+
+.required {
+    color: red;
+    font-size: 0.8em;
+}

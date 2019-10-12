@@ -18,10 +18,6 @@ public interface CrudCoinRepository extends JpaRepository<Coin, Integer> {
     @Query(value = "DELETE FROM Coin c WHERE c.id=:id")
     int delete(@Param("id") int id);
 
-    @Override
-    @Transactional
-    Coin save(Coin item);
-
     @Query(value = "SELECT c FROM Coin c WHERE c.name=:name")
     Optional<Coin> findByName(@Param("name") String name);
 

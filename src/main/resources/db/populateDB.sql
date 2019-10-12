@@ -7,7 +7,7 @@ CREATE SEQUENCE global_seq START WITH 1;
 CREATE TABLE collections
 (
     id               INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
-    name             VARCHAR                 NOT NULL,
+    name             VARCHAR UNIQUE                 NOT NULL,
     parent_id        INTEGER
 );
 

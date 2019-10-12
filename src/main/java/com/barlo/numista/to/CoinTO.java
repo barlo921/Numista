@@ -9,9 +9,12 @@ public class CoinTO {
     private String name;
     private Collection collection;
     private Collection subcollection;
-    private int year;
+    private Integer year;
     private String country;
     private String description;
+
+    public CoinTO() {
+    }
 
     public CoinTO(final Coin coin, final Collection collection, final Collection subcollection) {
         this.id = coin.getId();
@@ -20,6 +23,7 @@ public class CoinTO {
         this.country = coin.getCountry();
         this.collection = collection;
         this.subcollection = subcollection;
+        this.description = coin.getDescription();
     }
 
     public Integer getId() {
@@ -38,7 +42,7 @@ public class CoinTO {
         return subcollection;
     }
 
-    public int getYear() {
+    public Integer getYear() {
         return year;
     }
 
@@ -48,5 +52,22 @@ public class CoinTO {
 
     public String getDescription() {
         return description;
+    }
+
+    public boolean isNew() {
+        return id == null;
+    }
+
+    @Override
+    public String toString() {
+        return "CoinTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", collection=" + collection +
+                ", subcollection=" + subcollection +
+                ", year=" + year +
+                ", country='" + country + '\'' +
+                ", description='" + description + '\'' +
+                '}';
     }
 }

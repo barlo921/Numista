@@ -27,7 +27,7 @@ public class CoinServiceTest extends AbstractTest {
         Coin update = service.create(CoinTestData.getCreated(), COLLECTION2.getId());
         Coin updated = CoinTestData.getUpdated();
         updated.setId(update.getId());
-        service.update(updated, COLLECTION2.getId());
+        service.update(updated, COLLECTION1.getId());
         assertMatch(service.getById(update.getId()), updated);
     }
 

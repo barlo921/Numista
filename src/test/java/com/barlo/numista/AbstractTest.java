@@ -1,8 +1,6 @@
 package com.barlo.numista;
 
-import javafx.embed.swing.JFXPanel;
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import org.junit.rules.Stopwatch;

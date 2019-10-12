@@ -23,7 +23,7 @@ public class CoinTestData {
     }
 
     public static Coin getUpdated() {
-        return new Coin("Flagsss", 2017, "Italy", "", COLLECTION2);
+        return new Coin("Flagsss", 2017, "Italy", "", COLLECTION1);
     }
 
     public static void assertMatch(Coin actual, Coin expected) {

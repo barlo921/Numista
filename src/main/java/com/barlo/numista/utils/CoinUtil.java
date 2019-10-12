@@ -16,11 +16,11 @@ public class CoinUtil {
 
     public List<CoinTO> convertToCoinTO(final List<Coin> coins) {
         return coins.stream()
-                .map(coin -> createCoinTO(coin))
+                .map(this::createCoinTO)
                 .collect(Collectors.toList());
     }
 
-    private CoinTO createCoinTO(final Coin coin) {
+    public CoinTO createCoinTO(final Coin coin) {
         Collection tempCollection = null;
         Collection tempSubcollection = null;
         if (coin.getCollection().getParentId() == null) {

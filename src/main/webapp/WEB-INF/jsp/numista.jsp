@@ -8,7 +8,7 @@
 </head>
 <body>
 <div class="main_btns">
-    <form method="get" action="numista/collection/create">
+    <form method="get" action="/numista/collection/create">
         <button type="submit">Create Collection</button>
     </form>
     <form method="get" action="/numista/coin/create">
@@ -30,9 +30,9 @@
         <c:forEach items="${coins}" var="coin">
             <jsp:useBean id="coin" scope="page" type="com.barlo.numista.to.CoinTO"/>
             <tr>
-                <td>${coin.name}</td>
-                <td><a href="numista/collection/update?id=${coin.collection.id}">${coin.collection.name}</a></td>
-                <td><a href="numista/collection/update?id=${coin.subcollection.id}">${coin.subcollection.name}</a></td>
+                <td><a href="/numista/coin/update?id=${coin.id}">${coin.name}</a></td>
+                <td><a href="/numista/collection/update?id=${coin.collection.id}">${coin.collection.name}</a></td>
+                <td><a href="/numista/collection/update?id=${coin.subcollection.id}">${coin.subcollection.name}</a></td>
                 <td>${coin.year}</td>
                 <td>${coin.country}</td>
                 <td>${coin.description}</td>
