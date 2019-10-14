@@ -3,46 +3,9 @@
 <html>
 <head>
     <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
-    <script src="<c:url value="/resources/js/main.js"/>"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-
-    <script type="text/javascript">
-        $(document).ready(function(){
-
-            $("#topLevelCollectionsList").change(function(){
-
-                var collectionId = document.getElementById("topLevelCollectionsList").value;
-
-                $.ajax({
-                    url: "/api/collections/get_subcollections",
-                    type: "GET",
-                    data: {id:collectionId},
-                    dataType: 'json',
-                    success:function(response){
-
-                        var len = response.length;
-
-                        $("#collectionsList").empty();
-                        for( var i = 0; i<len; i++){
-                            var id = response[i]['id'];
-                            var name = response[i]['name'];
-
-                            $("#collectionsList").append("<option value='"+id+"'>"+name+"</option>");
-
-                        }
-                    }
-                });
-            });
-
-        });
-    </script>
-
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var date = new Date().getFullYear() + 1;
-            document.getElementById('coinYear').setAttribute("max", date);
-        })
-    </script>
+    <script src="<c:url value="/resources/js/main.js"/>"></script>
+    <script src="<c:url value="/resources/js/ajax/coinForm.js"/>"></script>
 
     <title>Coin</title>
 </head>

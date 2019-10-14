@@ -4,55 +4,9 @@
 <html>
 <head>
     <link href="<c:url value="/resources/css/style.css" />" rel="stylesheet">
-    <script src="<c:url value="/resources/js/main.js"/>"></script>
     <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script>
-
-    <script type="text/javascript">
-
-        $(document).ready(function () {
-
-            var oldName = document.getElementById("collectionName").value;
-            var validate = false;
-
-            var form = document.getElementById("updateCollection");
-
-            form.addEventListener("submit", function (event) {
-
-                var name = document.getElementById("collectionName").value;
-
-                if (oldName !== name) {
-                    validate = true;
-                }
-
-                if (validate) {
-                    var validity = true;
-
-                    var div = document.getElementById("ajaxText");
-                    div.innerHTML = "";
-
-                    $.ajax({
-                        url: "/api/collections/get_unique_name",
-                        type: "GET",
-                        data: {name:name},
-                        dataType: 'text',
-                        success:function (response) {
-                            if (response === 'false') {
-                                validity = false;
-                            }
-                        },
-                        async: false
-                    });
-
-                    if (!validity) {
-                        div.innerHTML += "Name must be Unique";
-                        event.preventDefault();
-                    }
-                }
-
-            })
-        });
-
-    </script>
+    <script src="<c:url value="/resources/js/main.js"/>"></script>
+    <script src="<c:url value="/resources/js/ajax/collectionForm.js"/>"></script>
 
     <title>Collection</title>
 </head>
