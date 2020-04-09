@@ -2,6 +2,7 @@ package com.barlo.numista.model.users;
 
 import com.barlo.numista.model.AbstractBaseEntity;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
@@ -23,18 +24,18 @@ public class User extends AbstractBaseEntity implements UserDetails {
     @CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "authorities")
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<? extends GrantedAuthority> grantedAuthorities;
+    private Set<Role> roles;
 
-    @Column(nullable = false)
+    @Column(name = "non_expired", nullable = false)
     private boolean isAccountNonExpired;
 
-    @Column(nullable = false)
+    @Column(name = "non_locked", nullable = false)
     private boolean isAccountNonLocked;
 
-    @Column(nullable = false)
+    @Column(name = "credentials_non_expired", nullable = false)
     private boolean isCredentialNonExpired;
 
-    @Column(nullable = false)
+    @Column(name = "enabled", nullable = false)
     private boolean isEnabled;
 
     public User() {
@@ -43,7 +44,7 @@ public class User extends AbstractBaseEntity implements UserDetails {
     public User(Integer id,
                 String username,
                 String password,
-                Set<? extends GrantedAuthority> grantedAuthorities,
+                Set<Role> grantedAuthorities,
                 boolean isAccountNonExpired,
                 boolean isAccountNonLocked,
                 boolean isCredentialNonExpired,
@@ -51,16 +52,57 @@ public class User extends AbstractBaseEntity implements UserDetails {
         super(id);
         this.username = username;
         this.password = password;
-        this.grantedAuthorities = grantedAuthorities;
+        this.roles = grantedAuthorities;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialNonExpired = isCredentialNonExpired;
         this.isEnabled = isEnabled;
     }
 
+    public User(String username,
+                String password,
+                Set<Role> grantedAuthorities,
+                boolean isAccountNonExpired,
+                boolean isAccountNonLocked,
+                boolean isCredentialNonExpired,
+                boolean isEnabled) {
+        this.username = username;
+        this.password = password;
+        this.roles = grantedAuthorities;
+        this.isAccountNonExpired = isAccountNonExpired;
+        this.isAccountNonLocked = isAccountNonLocked;
+        this.isCredentialNonExpired = isCredentialNonExpired;
+        this.isEnabled = isEnabled;
+    }
+
+    public User(Integer id,
+                String username,
+                String password,
+                boolean isAccountNonExpired,
+                boolean isAccountNonLocked,
+                boolean isCredentialNonExpired,
+                boolean isEnabled,
+                Role role,
+                Role... roles) {
+        this(id, username, password, EnumSet.of(role, roles), isAccountNonExpired, isAccountNonLocked, isCredentialNonExpired, isEnabled);
+    }
+
+    public User(String username,
+                String password,
+                boolean isAccountNonExpired,
+                boolean isAccountNonLocked,
+                boolean isCredentialNonExpired,
+                boolean isEnabled,
+                Role role,
+                Role... roles) {
+        this(username, password, EnumSet.of(role, roles), isAccountNonExpired, isAccountNonLocked, isCredentialNonExpired, isEnabled);
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return grantedAuthorities;
+        Set<SimpleGrantedAuthority> authorities = new HashSet<>();
+        roles.forEach(role -> authorities.addAll(role.getGrantedAuthorities()));
+        return authorities;
     }
 
     @Override
@@ -101,8 +143,8 @@ public class User extends AbstractBaseEntity implements UserDetails {
         this.password = password;
     }
 
-    public void setGrantedAuthorities(Set<? extends GrantedAuthority> grantedAuthorities) {
-        this.grantedAuthorities = grantedAuthorities;
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 
     public void setAccountNonExpired(boolean accountNonExpired) {
@@ -119,5 +161,19 @@ public class User extends AbstractBaseEntity implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", roles=" + roles +
+                ", isAccountNonExpired=" + isAccountNonExpired +
+                ", isAccountNonLocked=" + isAccountNonLocked +
+                ", isCredentialNonExpired=" + isCredentialNonExpired +
+                ", isEnabled=" + isEnabled +
+                '}';
     }
 }

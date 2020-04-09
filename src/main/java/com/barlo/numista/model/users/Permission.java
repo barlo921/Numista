@@ -1,7 +1,7 @@
 package com.barlo.numista.model.users;
 
 
-public enum UserPermission {
+public enum Permission {
     SELF_COLLECTION_READ("self_collection:read"),
     SELF_COIN_READ("self_coin:read"),
     SELF_COLLECTION_WRITE("self_collection:write"),
@@ -11,7 +11,7 @@ public enum UserPermission {
 
     private final String permission;
 
-    UserPermission(String permission) {
+    Permission(String permission) {
         this.permission = permission;
     }
 
