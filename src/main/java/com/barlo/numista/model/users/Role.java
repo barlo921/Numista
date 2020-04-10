@@ -11,8 +11,8 @@ import static com.barlo.numista.model.users.Permission.*;
 
 public enum Role {
 
-    ROLE_USER(Sets.newHashSet(SELF_COLLECTION_READ, SELF_COLLECTION_WRITE, SELF_COIN_READ, SELF_COIN_WRITE)),
-    ROLE_ADMIN(Sets.newHashSet(ALL_COLLECTION_READ, ALL_COLLECTION_WRITE));
+    USER(Sets.newHashSet(SELF_COLLECTION_READ, SELF_COLLECTION_WRITE, SELF_COIN_READ, SELF_COIN_WRITE)),
+    ADMIN(Sets.newHashSet(ALL_COLLECTION_READ, ALL_COLLECTION_WRITE));
 
     private Set<Permission> permissions;
 

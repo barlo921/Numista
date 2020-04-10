@@ -3,6 +3,9 @@ package com.barlo.numista.service;
 import com.barlo.numista.model.users.User;
 import com.barlo.numista.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
@@ -12,13 +15,18 @@ import static com.barlo.numista.utils.ValidationUtils.checkNotFound;
 import static com.barlo.numista.utils.ValidationUtils.checkNotFoundWithId;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
     private final UserRepository repository;
 
     @Autowired
     public UserService(UserRepository repository) {
         this.repository = repository;
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.getByUsername(username);
     }
 
     public User create(User user) {

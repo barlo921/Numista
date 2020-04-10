@@ -1,7 +1,7 @@
 DROP TABLE IF EXISTS coins;
 DROP TABLE IF EXISTS collections;
 DROP TABLE IF EXISTS users;
-DROP TABLE IF EXISTS user_authorities;
+DROP TABLE IF EXISTS user_roles;
 DROP SEQUENCE IF EXISTS global_seq;
 
 CREATE SEQUENCE global_seq START WITH 1;
@@ -34,10 +34,10 @@ CREATE TABLE users
     enabled         BOOLEAN                 NOT NULL
 );
 
-CREATE TABLE user_authorities
+CREATE TABLE user_roles
 (
     user_id         INTEGER                 NOT NULL,
-    authorities            VARCHAR,
+    role            VARCHAR,
     FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
@@ -54,6 +54,6 @@ INSERT INTO users (username, password, non_expired, non_locked, credentials_non_
 ('123@123.ru', 'password', true, true, true, true),
 ('1234@123.ru', 'password123', true, true, true, true);
 
-INSERT INTO user_authorities (authorities, user_id) VALUES
-('ROLE_USER', 5),
-('ROLE_ADMIN', 6);
+INSERT INTO user_roles (role, user_id) VALUES
+('USER', 5),
+('ADMIN', 6);

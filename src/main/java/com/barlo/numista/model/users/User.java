@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
-import java.util.Collection;
 
 @Entity
 @Table(name = "users",
@@ -21,8 +20,8 @@ public class User extends AbstractBaseEntity implements UserDetails {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    @CollectionTable(name = "user_authorities", joinColumns = @JoinColumn(name = "user_id"))
-    @Column(name = "authorities")
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"))
+    @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
@@ -44,7 +43,7 @@ public class User extends AbstractBaseEntity implements UserDetails {
     public User(Integer id,
                 String username,
                 String password,
-                Set<Role> grantedAuthorities,
+                Set<Role> roles,
                 boolean isAccountNonExpired,
                 boolean isAccountNonLocked,
                 boolean isCredentialNonExpired,
@@ -52,7 +51,7 @@ public class User extends AbstractBaseEntity implements UserDetails {
         super(id);
         this.username = username;
         this.password = password;
-        this.roles = grantedAuthorities;
+        this.roles = roles;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialNonExpired = isCredentialNonExpired;
@@ -61,14 +60,14 @@ public class User extends AbstractBaseEntity implements UserDetails {
 
     public User(String username,
                 String password,
-                Set<Role> grantedAuthorities,
+                Set<Role> roles,
                 boolean isAccountNonExpired,
                 boolean isAccountNonLocked,
                 boolean isCredentialNonExpired,
                 boolean isEnabled) {
         this.username = username;
         this.password = password;
-        this.roles = grantedAuthorities;
+        this.roles = roles;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialNonExpired = isCredentialNonExpired;
