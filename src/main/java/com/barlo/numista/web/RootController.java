@@ -10,10 +10,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping(value = "/", method = RequestMethod.GET)
 public class RootController extends AbstractController {
 
-    @GetMapping("/numista")
+    @GetMapping("/login")
     public String numista(Model model) {
         model.addAttribute("coins", coinUtil.convertToCoinTO(coinService.getAll()));
-        return "numista";
+        return "login";
+    }
+
+    @GetMapping("/about")
+    public String about() {
+        return "about";
+    }
+
+    @GetMapping("/connect")
+    public String connect() {
+        return "connect";
     }
 
 }
