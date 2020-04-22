@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+
 body{
-    font:1.2em normal Arial,sans-serif;
+    font-family: 'Roboto', sans-serif;
     color:#34495E;
+    background-color: #f4f5f7;
 }
 
 button {

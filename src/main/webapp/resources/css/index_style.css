@@ -16,6 +16,10 @@ html, body {
     padding: 0px;
 }
 
+.ml-auto form {
+    margin: 0px;
+}
+
 .jumbotron {
     padding: 2em;
 }

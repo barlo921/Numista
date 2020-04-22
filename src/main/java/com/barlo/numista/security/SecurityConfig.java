@@ -40,6 +40,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authenticated()
                 .and()
                 .formLogin()
+                    .loginPage("/login")
+                    .usernameParameter("email")
+                    .defaultSuccessUrl("/numista", true)
+                    .permitAll()
         ;
 
     }
