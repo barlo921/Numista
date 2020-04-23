@@ -28,7 +28,9 @@
                     <img class="d-block w-100" src="<c:url value="/resources/img/carousel-1.jpg" />" >
                     <div class="carousel-caption">
                         <h1 class="display-2">Numista</h1>
-                        <button type="button" class="btn btn-primary btn-lg">Get Started</button>
+                        <form action="/signup" method="get">
+                            <button type="submit" class="btn btn-primary btn-lg">Get Started</button>
+                        </form>
                     </div>
                 </div>
                 <div class="carousel-item">

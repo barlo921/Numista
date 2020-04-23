@@ -34,7 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/about", "/connect", "/resources/img/**", "/resources/css/**").permitAll()
+                .antMatchers("/", "/about", "/connect", "/signup", "/resources/img/**", "/resources/css/**").permitAll()
                 .antMatchers("/numista/**").hasRole(ADMIN.name())
                 .anyRequest()
                 .authenticated()

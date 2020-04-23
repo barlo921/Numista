@@ -21,6 +21,11 @@ public class RootController extends AbstractController {
         return "login";
     }
 
+    @GetMapping("/signup")
+    public String signup(Model model) {
+        return "signup";
+    }
+
     @GetMapping("/about")
     public String about() {
         return "about";

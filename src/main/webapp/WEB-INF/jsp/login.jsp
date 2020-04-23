@@ -32,6 +32,11 @@
                                     Bad credentials
                                 </div>
                             </c:if>
+                            <c:if test="${param.logout != null}">
+                                <div class="alert alert-danger" role="alert">
+                                    You have been sign out
+                                </div>
+                            </c:if>
                             <div class="form-group">
                                 <input type="email" id="email" name="email" class="form-control" placeholder="E-mail" required>
                             </div>
@@ -47,7 +52,7 @@
                         <a href="#">Forgot password?</a>
                     </div>
                     <div class="col-12 forgot">
-                        <a href="#">Sign Up</a>
+                        <a href="/signup">Sign Up</a>
                     </div>
 
                 </div>
