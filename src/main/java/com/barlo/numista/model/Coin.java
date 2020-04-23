@@ -1,5 +1,6 @@
 package com.barlo.numista.model;
 
+import com.barlo.numista.model.users.User;
 import com.sun.istack.internal.NotNull;
 
 import javax.persistence.*;
@@ -26,6 +27,14 @@ public class Coin extends AbstractBaseEntity {
     @JoinColumn(name = "collection_id", nullable = false)
     @NotNull
     private Collection collection;
+
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            targetEntity = User.class,
+            cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id", nullable = false)
+    @NotNull
+    private User user;
 
     public Coin() {
     }
@@ -95,6 +104,14 @@ public class Coin extends AbstractBaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

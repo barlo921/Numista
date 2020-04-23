@@ -15,16 +15,19 @@ public interface CrudCollectionRepository extends JpaRepository<Collection, Inte
 
     @Transactional
     @Modifying
-    @Query(value = "DELETE FROM Collection c WHERE c.id=:id")
+    @Query(value = "DELETE FROM Collection c WHERE c.id=:id AND c.user.id = ?#{ principal?.id }")
     int delete(@Param("id") int id);
 
-    @Query(value = "SELECT c FROM Collection c WHERE c.name=:name")
+    @Query(value = "SELECT c FROM Collection c WHERE c.id=:id AND c.user.id = ?#{ principal?.id }")
+    Optional<Collection> findByIdWithOwner(@Param("id") int id);
+
+    @Query(value = "SELECT c FROM Collection c WHERE c.name=:name AND c.user.id = ?#{ principal?.id }")
     Optional<Collection> findByName(@Param("name") String name);
 
-    @Query(value = "SELECT c FROM Collection c WHERE c.parentId IS NULL")
+    @Query(value = "SELECT c FROM Collection c WHERE c.parentId IS NULL AND c.user.id = ?#{ principal?.id }")
     List<Collection> findAllTopLevel();
 
-    @Query(value = "SELECT c FROM Collection c WHERE c.parentId=:parent_id")
+    @Query(value = "SELECT c FROM Collection c WHERE c.parentId=:parent_id AND c.user.id = ?#{ principal?.id }")
     List<Collection> findSubLevel(@Param("parent_id") int parentId);
 
 }

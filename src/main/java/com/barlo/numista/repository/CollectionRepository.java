@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CollectionRepository {
 
-    Collection save(Collection collection);
+    Collection save(Collection collection, int ownerId);
 
     boolean delete(int id);
 

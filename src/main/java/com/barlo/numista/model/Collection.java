@@ -1,13 +1,16 @@
 package com.barlo.numista.model;
 
+import com.barlo.numista.model.users.User;
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-@Table(name = "collections", uniqueConstraints = {@UniqueConstraint(columnNames = "name", name = "collections_unique_name_idx")})
+@Table(name = "collections")
 public class Collection extends AbstractBaseEntity {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(name = "parent_id")
@@ -17,6 +20,14 @@ public class Collection extends AbstractBaseEntity {
             fetch = FetchType.EAGER,
             mappedBy = "collection")
     private Set<Coin> setOfCoins;
+
+    @ManyToOne(
+            fetch = FetchType.EAGER,
+            targetEntity = User.class,
+            cascade = CascadeType.ALL)
+    @JoinColumn(name = "owner_id", nullable = false)
+    @NotNull
+    private User user;
 
     public Collection() {
     }
@@ -71,6 +82,14 @@ public class Collection extends AbstractBaseEntity {
         if (coin.getCollection() != this) {
             coin.setCollection(this);
         }
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Override

@@ -1,12 +1,13 @@
 package com.barlo.numista.model.users;
 
-import com.barlo.numista.model.AbstractBaseEntity;
+import com.barlo.numista.model.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import java.util.*;
+import java.util.Collection;
 
 @Entity
 @Table(name = "users",
@@ -24,6 +25,17 @@ public class User extends AbstractBaseEntity implements UserDetails {
     @Column(name = "role")
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<Role> roles;
+
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "user")
+    private Set<Coin> setOfCoins;
+
+    @OneToMany(
+            fetch = FetchType.EAGER,
+            mappedBy = "user"
+    )
+    private Set<com.barlo.numista.model.Collection> setOfCollections;
 
     @Column(name = "non_expired", nullable = false)
     private boolean isAccountNonExpired;
@@ -160,6 +172,22 @@ public class User extends AbstractBaseEntity implements UserDetails {
 
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
+    }
+
+    public Set<Coin> getSetOfCoins() {
+        return setOfCoins;
+    }
+
+    public void setSetOfCoins(Set<Coin> setOfCoins) {
+        this.setOfCoins = setOfCoins;
+    }
+
+    public Set<com.barlo.numista.model.Collection> getSetOfCollections() {
+        return setOfCollections;
+    }
+
+    public void setSetOfCollections(Set<com.barlo.numista.model.Collection> setOfCollections) {
+        this.setOfCollections = setOfCollections;
     }
 
     @Override

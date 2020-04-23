@@ -2,6 +2,7 @@ package com.barlo.numista.repository.datajpa;
 
 import com.barlo.numista.model.Coin;
 import com.barlo.numista.repository.CoinRepository;
+import com.barlo.numista.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -17,17 +18,22 @@ public class DataJpaCoinRepository implements CoinRepository {
 
     private CrudCoinRepository repository;
     private CrudCollectionRepository collectionRepository;
+    private CrudUserRepository userRepository;
 
     @Autowired
-    public DataJpaCoinRepository(CrudCoinRepository repository, CrudCollectionRepository collectionRepository) {
+    public DataJpaCoinRepository(CrudCoinRepository repository,
+                                 CrudCollectionRepository collectionRepository,
+                                 CrudUserRepository userRepository) {
         this.repository = repository;
         this.collectionRepository = collectionRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     @Transactional
-    public Coin save(Coin coin, int collectionId) {
+    public Coin save(Coin coin, int collectionId, int ownerId) {
         coin.setCollection(collectionRepository.getOne(collectionId));
+        coin.setUser(userRepository.getOne(ownerId));
         return repository.save(coin);
     }
 
@@ -38,7 +44,7 @@ public class DataJpaCoinRepository implements CoinRepository {
 
     @Override
     public Coin get(int id) {
-        return repository.findById(id).orElse(null);
+        return repository.findByIdWithOwner(id).orElse(null);
     }
 
     @Override
@@ -48,7 +54,7 @@ public class DataJpaCoinRepository implements CoinRepository {
 
     @Override
     public List<Coin> getAll() {
-        return repository.findAll(SORT_COLLECTION_NAME);
+        return repository.getAll(SORT_COLLECTION_NAME);
     }
 
     @Override

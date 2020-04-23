@@ -2,6 +2,7 @@ package com.barlo.numista.repository.datajpa;
 
 import com.barlo.numista.model.Collection;
 import com.barlo.numista.repository.CollectionRepository;
+import com.barlo.numista.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Repository;
@@ -16,15 +17,18 @@ public class DataJpaCollectionRepository implements CollectionRepository {
     private static final Sort SORT_NAME = new Sort(Sort.Direction.DESC, "name");
 
     private CrudCollectionRepository repository;
+    private CrudUserRepository userRepository;
 
     @Autowired
-    public DataJpaCollectionRepository(CrudCollectionRepository repository) {
+    public DataJpaCollectionRepository(CrudCollectionRepository repository, CrudUserRepository userRepository) {
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     @Override
     @Transactional
-    public Collection save(Collection collection) {
+    public Collection save(Collection collection, int ownerId) {
+        collection.setUser(userRepository.getOne(ownerId));
         return repository.save(collection);
     }
 
@@ -35,7 +39,7 @@ public class DataJpaCollectionRepository implements CollectionRepository {
 
     @Override
     public Collection get(int id) {
-        return repository.findById(id).orElse(null);
+        return repository.findByIdWithOwner(id).orElse(null);
     }
 
     @Override

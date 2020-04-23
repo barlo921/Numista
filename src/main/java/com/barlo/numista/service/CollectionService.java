@@ -20,12 +20,12 @@ public class CollectionService {
         this.repository = repository;
     }
 
-    public Collection create(Collection collection) {
-        return repository.save(collection);
+    public Collection create(Collection collection, int ownerId) {
+        return repository.save(collection, ownerId);
     }
 
-    public void update(Collection collection) {
-        checkNotFoundWithId(repository.save(collection), collection.getId());
+    public void update(Collection collection, int ownerId) {
+        checkNotFoundWithId(repository.save(collection, ownerId), collection.getId());
     }
 
     public Collection get(Integer id) {

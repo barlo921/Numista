@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface CoinRepository {
 
-    Coin save(Coin coin, int collectionId);
+    Coin save(Coin coin, int collectionId, int ownerId);
 
     boolean delete(int id);
 

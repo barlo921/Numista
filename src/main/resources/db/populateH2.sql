@@ -9,7 +9,7 @@ CREATE SEQUENCE global_seq START WITH 1;
 CREATE TABLE collections
 (
     id               INTEGER DEFAULT global_seq.nextval PRIMARY KEY,
-    name             VARCHAR UNIQUE                 NOT NULL,
+    name             VARCHAR                 NOT NULL,
     parent_id        INTEGER
 );
 
@@ -20,7 +20,9 @@ CREATE TABLE coins (
                        year        INTEGER                   ,
                        country     VARCHAR                   ,
                        description VARCHAR                   ,
-                       FOREIGN KEY (collection_id) REFERENCES collections (id) ON DELETE CASCADE
+                       owner_id    VARCHAR          NOT NULL,
+                       FOREIGN KEY (collection_id) REFERENCES collections (id) ON DELETE CASCADE,
+                       FOREIGN KEY (owner_id) REFERENCES users (id) ON DELETE CASCADE
 );
 
 CREATE TABLE users

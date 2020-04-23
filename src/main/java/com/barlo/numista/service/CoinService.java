@@ -21,12 +21,12 @@ public class CoinService {
         this.repository = repository;
     }
 
-    public Coin create(Coin coin, int collectionId) {
-        return repository.save(coin, collectionId);
+    public Coin create(Coin coin, int collectionId, int ownerId) {
+        return repository.save(coin, collectionId, ownerId);
     }
 
-    public Coin update(Coin coin, int collectionId) {
-        return repository.save(coin, collectionId);
+    public Coin update(Coin coin, int collectionId, int ownerId) {
+        return repository.save(coin, collectionId, ownerId);
     }
 
     //Get all objects from repository

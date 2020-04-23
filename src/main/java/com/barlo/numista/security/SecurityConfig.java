@@ -11,8 +11,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.data.repository.query.SecurityEvaluationContextExtension;
 
 import static com.barlo.numista.model.users.Role.ADMIN;
+import static com.barlo.numista.model.users.Role.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/", "/about", "/connect", "/signup", "/resources/img/**", "/resources/css/**").permitAll()
-                .antMatchers("/numista/**").hasRole(ADMIN.name())
+                .antMatchers("/numista/**").hasAnyRole(ADMIN.name(), USER.name())
                 .anyRequest()
                 .authenticated()
                 .and()
@@ -59,5 +61,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         provider.setPasswordEncoder(passwordEncoder);
         provider.setUserDetailsService(userService);
         return provider;
+    }
+
+    @Bean
+    public SecurityEvaluationContextExtension securityEvaluationContextExtension (){
+        return new SecurityEvaluationContextExtension();
     }
 }
