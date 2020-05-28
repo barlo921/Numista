@@ -16,7 +16,7 @@ public class CollectionServiceTest extends AbstractTest {
     @Test
     public void createTest() {
         Collection newCollection = getCreated();
-        Collection created = service.create(newCollection);
+        Collection created = service.create(newCollection, 1);
         newCollection.setId(created.getId());
         assertMatch(newCollection, created);
     }
@@ -24,7 +24,7 @@ public class CollectionServiceTest extends AbstractTest {
     @Test
     public void updateTest() {
         Collection updated = getUpdated();
-        service.update(updated);
+        service.update(updated, 1);
         assertMatch(service.get(COLLECTION1_ID + 1), updated);
     }
 

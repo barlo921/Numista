@@ -17,17 +17,17 @@ public class CoinServiceTest extends AbstractTest {
     @Test
     public void createTest() {
         Coin created = CoinTestData.getCreated();
-        Coin newCoin = service.create(created, COLLECTION2.getId());
+        Coin newCoin = service.create(created, COLLECTION2.getId(), 1);
         created.setId(newCoin.getId());
         assertMatch(newCoin, created);
     }
 
     @Test
     public void updateTest() {
-        Coin update = service.create(CoinTestData.getCreated(), COLLECTION2.getId());
+        Coin update = service.create(CoinTestData.getCreated(), COLLECTION2.getId(), 1);
         Coin updated = CoinTestData.getUpdated();
         updated.setId(update.getId());
-        service.update(updated, COLLECTION1.getId());
+        service.update(updated, COLLECTION1.getId(),1);
         assertMatch(service.getById(update.getId()), updated);
     }
 

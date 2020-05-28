@@ -1,0 +1,57 @@
+.table-body {
+    margin-top: 1%;
+}
+
+.table-wrapper {
+    padding-top: 1%;
+    padding-left: 2%;
+    padding-right: 2%;
+}
+
+.table {
+    background-color: #FFFFFF;
+}
+
+.table .thead-dark th {
+    color: white;
+    background-color:#6180ba !important;
+}
+
+.btn-main {
+    margin: 1%;
+    background-color: #6180ba !important;
+}
+
+.btn-main:hover {
+    box-shadow: 0 5px 7px 0 rgba(0,0,0,0.24), 0 10px 25px 0 rgba(0,0,0,0.19);
+}
+
+.btns {
+    padding: 0;
+    margin: 0;
+}
+
+.col-btn, .coin-btn {
+    margin: 0;
+}
+
+.footer {
+    margin-left: 0%;
+}
+
+.header {
+    margin-left: 2%;
+}
+
+.search {
+    margin-right: 1%;
+}
+
+.pagination {
+    margin-right: 2%;
+}
+
+.pagination > .active > a {
+    background-color: #6180ba !important;
+    border: solid 1px #242424 !important;
+}
